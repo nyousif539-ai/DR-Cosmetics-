@@ -55,13 +55,12 @@
         .nav-links a::after { content: ''; position: absolute; bottom: 0; right: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s ease; }
         .nav-links a:hover { color: var(--gold); }
         .nav-links a:hover::after { width: 100%; }
-        .nav-icons { display: flex; gap: 12px; align-items: center; }
-        .nav-icons button { color: var(--text); font-size: 1rem; transition: color 0.3s; position: relative; background: none; border: none; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .nav-icons button:hover { color: var(--gold); background: rgba(201,169,98,0.1); }
-        .nav-icons .auth-user-btn { width: auto; height: auto; border-radius: 20px; }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icons button { color: var(--text); font-size: 1.1rem; transition: color 0.3s; position: relative; background: none; border: none; cursor: pointer; }
+        .nav-icons button:hover { color: var(--gold); }
         .cart-count {
-            position: absolute; top: -6px; right: -6px; background: var(--gold); color: var(--black);
-            font-size: 0.6rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%;
+            position: absolute; top: -8px; right: -8px; background: var(--gold); color: var(--black);
+            font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
         }
 
@@ -106,7 +105,7 @@
         }
         .product-card:hover { transform: translateY(-10px); border-color: rgba(201,169,98,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
         .product-image { height: 320px; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .product-image img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; padding: 20px; transition: transform 0.4s ease; display: block; }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; padding: 20px; transition: transform 0.4s ease; }
         .product-card:hover .product-image img { transform: scale(1.05); }
         .product-image i { font-size: 4rem; color: var(--gold); opacity: 0.5; }
         .product-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: var(--black); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 2; }
@@ -270,7 +269,7 @@
     
         /* PWA Install */
         .pwa-install-btn { position: relative; }
-        .pwa-install-btn::after { content: ''; position: absolute; top: -1px; right: -1px; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+        .pwa-install-btn::after { content: ''; position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
         .pwa-ios-modal .modal { max-width: 420px; text-align: right; }
         .pwa-ios-modal .modal h3 { text-align: center; }
@@ -282,15 +281,40 @@
         .pwa-ios-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--black); border-radius: 10px; border: 1px solid rgba(201,169,98,0.2); }
 
     
-        /* Auth & Admin Styles */
-        .auth-user { display: flex; align-items: center; gap: 10px; }
-        .auth-user-name { color: var(--gold); font-weight: 700; font-size: 0.85rem; }
+        /* Auth & Profile Styles */
+        .auth-user { display: flex; align-items: center; gap: 6px; }
         .auth-user-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: all 0.3s; font-family: 'Tajawal', sans-serif; display: inline-flex; align-items: center; gap: 5px; }
         .auth-user-btn:hover { background: var(--gold); color: var(--black); }
         .auth-user-btn i { font-size: 0.75rem; }
         .auth-user-name { color: var(--gold); font-weight: 700; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 5px; }
-        .auth-user { display: flex; align-items: center; gap: 6px; }
         .admin-badge { background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; margin-right: 5px; vertical-align: middle; }
+
+        /* Profile Avatar & Dropdown */
+        .profile-avatar { position: relative; cursor: pointer; }
+        .profile-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); transition: all 0.3s ease; }
+        .profile-avatar-img:hover { box-shadow: 0 0 15px rgba(201,169,98,0.4); transform: scale(1.05); }
+        .profile-avatar-placeholder { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem; border: 2px solid var(--gold); transition: all 0.3s ease; }
+        .profile-avatar-placeholder:hover { box-shadow: 0 0 15px rgba(201,169,98,0.4); transform: scale(1.05); }
+        .profile-dropdown { position: absolute; top: 50px; left: 0; background: var(--dark-light); border: 1px solid rgba(201,169,98,0.2); border-radius: 16px; padding: 8px; min-width: 220px; z-index: 2000; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .profile-dropdown-header { display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid rgba(201,169,98,0.1); margin-bottom: 8px; }
+        .profile-dropdown-header img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); }
+        .profile-dropdown-header .placeholder { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 1rem; border: 2px solid var(--gold); }
+        .profile-dropdown-info h4 { color: var(--text); font-size: 0.9rem; margin-bottom: 3px; }
+        .profile-dropdown-info p { color: var(--text-muted); font-size: 0.75rem; }
+        .profile-dropdown-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: var(--text); text-decoration: none; font-size: 0.85rem; transition: all 0.2s ease; cursor: pointer; background: none; border: none; width: 100%; text-align: right; font-family: 'Tajawal', sans-serif; }
+        .profile-dropdown-item:hover { background: rgba(201,169,98,0.1); color: var(--gold); }
+        .profile-dropdown-item i { width: 20px; text-align: center; color: var(--gold); font-size: 0.9rem; }
+        .profile-dropdown-divider { height: 1px; background: rgba(201,169,98,0.1); margin: 8px 0; }
+
+        /* Profile Edit Modal */
+        .profile-edit-avatar { text-align: center; margin-bottom: 25px; }
+        .profile-edit-avatar img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); margin-bottom: 15px; }
+        .profile-edit-avatar .placeholder { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 2rem; border: 3px solid var(--gold); margin: 0 auto 15px; }
+        .change-photo-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 6px 20px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-family: 'Tajawal', sans-serif; transition: all 0.3s; }
+        .change-photo-btn:hover { background: var(--gold); color: var(--black); }
+
+        /* Admin Panel */
         .admin-filter { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .admin-filter button { background: var(--black); border: 1px solid rgba(201,169,98,0.2); color: var(--text); padding: 8px 20px; border-radius: 25px; cursor: pointer; font-family: 'Tajawal', sans-serif; transition: all 0.3s; }
         .admin-filter button.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
@@ -305,189 +329,19 @@
         .admin-actions .btn { padding: 8px 18px; font-size: 0.8rem; }
         .btn-info { background: #2196F3; color: white; }
         .btn-info:hover { background: #42A5F5; }
+
+        /* Page Views - SPA Style */
+        .page-view { transition: opacity 0.5s ease, transform 0.5s ease; }
+        .page-view.hidden { display: none; opacity: 0; transform: translateY(20px); }
+        .page-view.active { display: block; opacity: 1; transform: translateY(0); animation: pageFadeIn 0.5s ease forwards; }
+        @keyframes pageFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .page-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid rgba(201,169,98,0.1); margin-bottom: 40px; }
+        .page-header h2 { font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .page-back-btn { background: none; border: none; color: var(--text); font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'Tajawal', sans-serif; transition: color 0.3s; }
+        .page-back-btn:hover { color: var(--gold); }
         .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; color: #444; border: 1px solid #ddd; padding: 12px; border-radius: 50px; width: 100%; cursor: pointer; font-family: 'Tajawal', sans-serif; font-weight: 700; transition: all 0.3s; }
         .google-btn:hover { background: #f5f5f5; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .google-btn i { color: #EA4335; font-size: 1.1rem; }
-
-    
-        /* Profile Avatar & Dropdown */
-        .profile-avatar {
-            position: relative;
-            cursor: pointer;
-        }
-        .profile-avatar-img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold);
-            transition: all 0.3s ease;
-        }
-        .profile-avatar-img:hover {
-            box-shadow: 0 0 15px rgba(201,169,98,0.4);
-            transform: scale(1.05);
-        }
-        .profile-avatar-placeholder {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--black);
-            font-weight: 700;
-            font-size: 0.9rem;
-            border: 2px solid var(--gold);
-            transition: all 0.3s ease;
-        }
-        .profile-avatar-placeholder:hover {
-            box-shadow: 0 0 15px rgba(201,169,98,0.4);
-            transform: scale(1.05);
-        }
-        .profile-dropdown {
-            position: absolute;
-            top: 50px;
-            left: 0;
-            background: var(--dark-light);
-            border: 1px solid rgba(201,169,98,0.2);
-            border-radius: 16px;
-            padding: 8px;
-            min-width: 220px;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        .profile-dropdown.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .profile-dropdown-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-bottom: 1px solid rgba(201,169,98,0.1);
-            margin-bottom: 8px;
-        }
-        .profile-dropdown-header img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold);
-        }
-        .profile-dropdown-header .placeholder {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--black);
-            font-weight: 700;
-            font-size: 1rem;
-            border: 2px solid var(--gold);
-        }
-        .profile-dropdown-info h4 {
-            color: var(--text);
-            font-size: 0.9rem;
-            margin-bottom: 3px;
-        }
-        .profile-dropdown-info p {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-        .profile-dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: right;
-            font-family: 'Tajawal', sans-serif;
-        }
-        .profile-dropdown-item:hover {
-            background: rgba(201,169,98,0.1);
-            color: var(--gold);
-        }
-        .profile-dropdown-item i {
-            width: 20px;
-            text-align: center;
-            color: var(--gold);
-            font-size: 0.9rem;
-        }
-        .profile-dropdown-divider {
-            height: 1px;
-            background: rgba(201,169,98,0.1);
-            margin: 8px 0;
-        }
-        .profile-dropdown-footer {
-            padding: 8px 12px;
-            border-top: 1px solid rgba(201,169,98,0.1);
-            margin-top: 8px;
-        }
-        .profile-dropdown-footer .btn {
-            width: 100%;
-            padding: 10px;
-            font-size: 0.8rem;
-        }
-
-        /* Profile Edit Modal */
-        .profile-edit-avatar {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .profile-edit-avatar img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--gold);
-            margin-bottom: 15px;
-        }
-        .profile-edit-avatar .placeholder {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--black);
-            font-weight: 700;
-            font-size: 2rem;
-            border: 3px solid var(--gold);
-            margin: 0 auto 15px;
-        }
-        .profile-edit-avatar .change-photo-btn {
-            background: none;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            transition: all 0.3s;
-        }
-        .profile-edit-avatar .change-photo-btn:hover {
-            background: var(--gold);
-            color: var(--black);
-        }
 
     </style>
 <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIkRSIENvc21ldGljcyIsICJzaG9ydF9uYW1lIjogIkRSIENvc21ldGljcyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTBhIiwgInRoZW1lX2NvbG9yIjogIiNDOUE5NjIiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0l4T1RJaUlHaGxhV2RvZEQwaU1Ua3lJaUIyYVdWM1FtOTRQU0l3SURBZ01Ua3lJREU1TWlJK1BISmxZM1FnZDJsa2RHZzlJakU1TWlJZ2FHVnBaMmgwUFNJeE9USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSTBNQ0krUkZJOEwzUmxlSFErUEM5emRtYysiLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifSwgeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0kxTVRJaUlHaGxhV2RvZEQwaU5URXlJaUIyYVdWM1FtOTRQU0l3SURBZ05URXlJRFV4TWlJK1BISmxZM1FnZDJsa2RHZzlJalV4TWlJZ2FHVnBaMmgwUFNJMU1USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSXhNREFpUGxKRVB3dmRHVjRkRDQ4TDNOMlp6ND0iLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifV19">
@@ -554,48 +408,65 @@
     <nav id="navbar">
         <a href="#" class="logo">DR <span>COSMETICS</span></a>
         <ul class="nav-links">
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#perfumes">العطور</a></li>
-            <li><a href="#makeup">المكياج</a></li>
+            <li><a href="#" onclick="showLandingPage(); return false;">الرئيسية</a></li>
+            <li><a href="#" onclick="showPerfumesPage(); return false;">العطور</a></li>
+            <li><a href="#" onclick="showMakeupPage(); return false;">المكياج</a></li>
             <li><a href="#" onclick="showOrdersPage(); return false;">طلباتي</a></li>
         </ul>
         <div class="nav-icons">
-            <button id="pwaInstallBtn" onclick="handlePWAInstall()" style="display:none; font-size: 0.9rem;" title="تثبيت التطبيق"><i class="fas fa-download"></i></button>
+            <button id="pwaInstallBtn" onclick="handlePWAInstall()" style="display:none;" title="تثبيت التطبيق"><i class="fas fa-download"></i></button>
             <button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></button>
         </div>
     </nav>
 
     <!-- Hero -->
-    <section class="hero" id="home">
+    <div class="page-view" id="landingPage">
+        <section class="hero" id="home">
         <div class="hero-bg"></div>
         <div class="hero-content">
             <p class="hero-subtitle">فخامة لا تُضاهى</p>
             <h1 class="hero-title">اكتشفي جمالك <span class="highlight">الحقيقي</span></h1>
             <p class="hero-desc">مجموعة حصرية من أرقى العطور والمكياج العالمي، مختارة بعناية لأجلك.</p>
             <div class="hero-btns">
-                <a href="#perfumes" class="btn btn-primary" onclick="scrollToSection('perfumes'); return false;"><i class="fas fa-sparkles"></i> استكشفي العطور</a>
-                <a href="#makeup" class="btn btn-outline" onclick="scrollToSection('makeup'); return false;"><i class="fas fa-palette"></i> المكياج</a>
+                <button class="btn btn-primary" onclick="showPerfumesPage()"><i class="fas fa-sparkles"></i> استكشفي العطور</button>
+                <button class="btn btn-outline" onclick="showMakeupPage()"><i class="fas fa-palette"></i> المكياج</button>
             </div>
         </div>
     </section>
 
     <!-- Perfumes -->
-    <section id="perfumes">
+    <div class="page-view hidden" id="perfumesPage">
+        <div class="page-header">
+            <h2><i class="fas fa-sparkles" style="color: var(--gold);"></i> عالم العطور</h2>
+            <button class="page-back-btn" onclick="showLandingPage()">
+                <i class="fas fa-arrow-right"></i> العودة
+            </button>
+        </div>
+        <section id="perfumes">
         <div class="section-header reveal">
             <span class="section-label">عالم العطور</span>
             <h2 class="section-title">أرقى <span style="color: var(--gold)">العطور</span> العالمية</h2>
         </div>
         <div class="products-grid" id="perfumesGrid"></div>
     </section>
+    </div>
 
     <!-- Makeup -->
-    <section id="makeup">
+    <div class="page-view hidden" id="makeupPage">
+        <div class="page-header">
+            <h2><i class="fas fa-palette" style="color: var(--gold);"></i> عالم المكياج</h2>
+            <button class="page-back-btn" onclick="showLandingPage()">
+                <i class="fas fa-arrow-right"></i> العودة
+            </button>
+        </div>
+        <section id="makeup">
         <div class="section-header reveal">
             <span class="section-label">إطلالة مثالية</span>
             <h2 class="section-title">عالم <span style="color: var(--gold)">المكياج</span></h2>
         </div>
         <div class="products-grid" id="makeupGrid"></div>
     </section>
+    </div>
 
     <!-- Private -->
     
@@ -606,6 +477,7 @@
         <p style="color: var(--text-muted); margin-bottom: 25px;">وجهتكِ الأولى للعطور والمكياج الفاخر</p>
         <p style="color: var(--text-muted); font-size: 0.9rem;">© 2026 DR Cosmetics</p>
     </footer>
+    </div>
 
     <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
@@ -1110,12 +982,6 @@
             overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
         });
 
-        function goHome() {
-            closeOrdersPage();
-            closeAdminPage();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
         // Init
         window.addEventListener('load', () => {
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
@@ -1307,7 +1173,6 @@
                 `;
                 navIcons.insertBefore(profileDiv, navIcons.firstChild);
 
-                // Close dropdown when clicking outside
                 document.addEventListener('click', (e) => {
                     const dropdown = document.getElementById('profileDropdown');
                     const avatar = document.querySelector('.profile-avatar');
@@ -1330,11 +1195,7 @@
 
         function showProfileEdit() {
             if (!currentUser) return;
-
-            // Load name
             document.getElementById('profileName').value = currentUser.displayName || '';
-
-            // Set avatar
             const displayName = currentUser.displayName || currentUser.email.split('@')[0];
             const firstLetter = displayName.charAt(0).toUpperCase();
             const photoURL = currentUser.photoURL || localStorage.getItem('drProfilePhoto_' + currentUser.uid);
@@ -1351,17 +1212,13 @@
 
         async function saveProfile() {
             if (!currentUser) return;
-
             const name = document.getElementById('profileName').value.trim();
 
             try {
-                // Update display name in Firebase Auth
                 if (name && name !== currentUser.displayName) {
                     const { updateProfile } = window._firebaseFns;
                     await updateProfile(currentUser, { displayName: name });
                 }
-
-                // Update UI
                 updateAuthUI();
                 closeModal('profileEditModal');
                 showToast('تم حفظ التغييرات بنجاح!');
@@ -1374,34 +1231,23 @@
         function handleProfilePhotoChange(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             if (file.size > 2 * 1024 * 1024) {
                 showToast('حجم الصورة كبير جداً (الحد الأقصى 2MB)', true);
                 return;
             }
-
             const reader = new FileReader();
             reader.onload = (e) => {
                 const avatarContainer = document.getElementById('profileEditAvatarContainer');
                 avatarContainer.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
-
-                // Save to localStorage (base64)
                 if (currentUser) {
                     localStorage.setItem('drProfilePhoto_' + currentUser.uid, e.target.result);
                 }
-                showToast('تم تحميل الصورة! اضغط حفظ للتأكيد');
+                showToast('تم تحميل الصورة! اضغط موافق للتأكيد');
             };
             reader.readAsDataURL(file);
         }
 
-        // Load profile photo on auth state change
-        function loadProfilePhoto() {
-            if (!currentUser) return;
-            const savedPhoto = localStorage.getItem('drProfilePhoto_' + currentUser.uid);
-            if (savedPhoto && !currentUser.photoURL) {
-                currentUser.photoURL = savedPhoto;
-            }
-        }function showAuthModal() {
+        function showAuthModal() {
             authMode = 'login';
             document.getElementById('authTitle').textContent = 'تسجيل الدخول';
             document.getElementById('authBtnText').textContent = 'دخول';
@@ -1418,44 +1264,6 @@
             document.getElementById('authToggleText').textContent = authMode === 'login' ? 'ليس لديك حساب؟' : 'لديك حساب بالفعل؟';
             document.getElementById('authToggleLink').textContent = authMode === 'login' ? 'سجّل الآن' : 'سجّل دخول';
             document.getElementById('authNameGroup').style.display = authMode === 'register' ? 'block' : 'none';
-        }
-
-        async function handleGoogleSignIn() {
-            document.getElementById('authForm').style.display = 'none';
-            document.getElementById('authLoading').style.display = 'block';
-
-            try {
-                const { auth } = window._firebase;
-                const { GoogleAuthProvider, signInWithPopup } = window._firebaseFns;
-                const provider = new GoogleAuthProvider();
-                provider.addScope('email');
-                provider.addScope('profile');
-                provider.setCustomParameters({ 
-                    prompt: 'select_account',
-                    login_hint: 'user@example.com'
-                });
-
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                console.log('Google Sign-In Success:', user.email);
-                showToast('تم تسجيل الدخول بحساب Google! مرحباً ' + (user.displayName || user.email));
-                closeModal('authModal');
-            } catch (error) {
-                console.error('Google Sign-In Error:', error.code, error.message);
-                let msg = 'حدث خطأ في تسجيل الدخول';
-                if (error.code === 'auth/popup-closed-by-user') msg = 'تم إغلاق النافذة';
-                else if (error.code === 'auth/popup-blocked') msg = 'تم حظر النافذة المنبثقة. فعّلها: اضغط 🔒 بجانب العنوان → Site settings → Pop-ups → Allow';
-                else if (error.code === 'auth/account-exists-with-different-credential') msg = 'هذا البريد مسجل بكلمة مرور. استخدم تسجيل الدخول بالبريد';
-                else if (error.code === 'auth/unauthorized-domain') msg = 'النطاق غير مصرح. أضفه في Firebase Console → Authentication → Settings → Authorized domains';
-                else if (error.code === 'auth/operation-not-allowed') msg = 'تسجيل Google غير مفعّل. فعّله في Firebase Console → Authentication → Sign-in method';
-                else if (error.code === 'auth/cancelled-popup-request') msg = 'تم إلغاء الطلب';
-                else if (error.code === 'auth/internal-error') msg = 'خطأ داخلي. جرّب متصفح آخر أو امسح الكوكيز';
-                else msg = 'خطأ: ' + error.message;
-                showToast(msg, true);
-            } finally {
-                document.getElementById('authForm').style.display = 'block';
-                document.getElementById('authLoading').style.display = 'none';
-            }
         }
 
         async function handleAuth() {
@@ -1495,11 +1303,86 @@
             }
         }
 
+        async function handleGoogleSignIn() {
+            document.getElementById('authForm').style.display = 'none';
+            document.getElementById('authLoading').style.display = 'block';
+
+            try {
+                const { auth } = window._firebase;
+                const { GoogleAuthProvider, signInWithPopup } = window._firebaseFns;
+                const provider = new GoogleAuthProvider();
+                provider.addScope('email');
+                provider.addScope('profile');
+                provider.setCustomParameters({ prompt: 'select_account' });
+
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log('Google Sign-In Success:', user.email);
+                showToast('تم تسجيل الدخول بحساب Google! مرحباً ' + (user.displayName || user.email));
+                closeModal('authModal');
+            } catch (error) {
+                console.error('Google Sign-In Error:', error.code, error.message);
+                let msg = 'حدث خطأ في تسجيل الدخول';
+                if (error.code === 'auth/popup-closed-by-user') msg = 'تم إغلاق النافذة';
+                else if (error.code === 'auth/popup-blocked') msg = 'تم حظر النافذة المنبثقة، فعّلها من إعدادات المتصفح';
+                else if (error.code === 'auth/account-exists-with-different-credential') msg = 'هذا البريد مسجل بطريقة أخرى';
+                else if (error.code === 'auth/unauthorized-domain') msg = 'النطاق غير مصرح. أضفه في Firebase Console → Authentication → Settings → Authorized domains';
+                else if (error.code === 'auth/operation-not-allowed') msg = 'تسجيل Google غير مفعّل. فعّله في Firebase Console → Authentication → Sign-in method';
+                else if (error.code === 'auth/cancelled-popup-request') msg = 'تم إلغاء الطلب';
+                else if (error.code === 'auth/internal-error') msg = 'خطأ داخلي. جرّب متصفح آخر أو امسح الكوكيز';
+                else msg = 'خطأ: ' + error.message;
+                showToast(msg, true);
+            } finally {
+                document.getElementById('authForm').style.display = 'block';
+                document.getElementById('authLoading').style.display = 'none';
+            }
+        }
+
         async function logout() {
             try {
                 await window._firebaseFns.signOut(window._firebase.auth);
                 showToast('تم تسجيل الخروج');
             } catch (e) { showToast('حدث خطأ', true); }
+        }
+
+        // Page Navigation - SPA Style
+        function showLandingPage() {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('active');
+            });
+            const landing = document.getElementById('landingPage');
+            landing.classList.remove('hidden');
+            landing.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showPerfumesPage() {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('active');
+            });
+            const page = document.getElementById('perfumesPage');
+            page.classList.remove('hidden');
+            page.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMakeupPage() {
+            document.querySelectorAll('.page-view').forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('active');
+            });
+            const page = document.getElementById('makeupPage');
+            page.classList.remove('hidden');
+            page.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            showLandingPage();
+            closeOrdersPage();
+            closeAdminPage();
         }
 
         // Override submitOrder for Firestore
@@ -1698,7 +1581,6 @@
         </div>
     </div>
 
-    
     <!-- Profile Edit Modal -->
     <div class="modal-overlay" id="profileEditModal">
         <div class="modal" style="max-width: 400px; text-align: center;">
