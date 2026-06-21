@@ -309,6 +309,186 @@
         .google-btn:hover { background: #f5f5f5; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .google-btn i { color: #EA4335; font-size: 1.1rem; }
 
+    
+        /* Profile Avatar & Dropdown */
+        .profile-avatar {
+            position: relative;
+            cursor: pointer;
+        }
+        .profile-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+        .profile-avatar-img:hover {
+            box-shadow: 0 0 15px rgba(201,169,98,0.4);
+            transform: scale(1.05);
+        }
+        .profile-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 2px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+        .profile-avatar-placeholder:hover {
+            box-shadow: 0 0 15px rgba(201,169,98,0.4);
+            transform: scale(1.05);
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background: var(--dark-light);
+            border: 1px solid rgba(201,169,98,0.2);
+            border-radius: 16px;
+            padding: 8px;
+            min-width: 220px;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .profile-dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(201,169,98,0.1);
+            margin-bottom: 8px;
+        }
+        .profile-dropdown-header img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+        .profile-dropdown-header .placeholder {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid var(--gold);
+        }
+        .profile-dropdown-info h4 {
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        .profile-dropdown-info p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        .profile-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: right;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .profile-dropdown-item:hover {
+            background: rgba(201,169,98,0.1);
+            color: var(--gold);
+        }
+        .profile-dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+        .profile-dropdown-divider {
+            height: 1px;
+            background: rgba(201,169,98,0.1);
+            margin: 8px 0;
+        }
+        .profile-dropdown-footer {
+            padding: 8px 12px;
+            border-top: 1px solid rgba(201,169,98,0.1);
+            margin-top: 8px;
+        }
+        .profile-dropdown-footer .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Profile Edit Modal */
+        .profile-edit-avatar {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .profile-edit-avatar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold);
+            margin-bottom: 15px;
+        }
+        .profile-edit-avatar .placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-weight: 700;
+            font-size: 2rem;
+            border: 3px solid var(--gold);
+            margin: 0 auto 15px;
+        }
+        .profile-edit-avatar .change-photo-btn {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s;
+        }
+        .profile-edit-avatar .change-photo-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
     </style>
 <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIkRSIENvc21ldGljcyIsICJzaG9ydF9uYW1lIjogIkRSIENvc21ldGljcyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTBhIiwgInRoZW1lX2NvbG9yIjogIiNDOUE5NjIiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0l4T1RJaUlHaGxhV2RvZEQwaU1Ua3lJaUIyYVdWM1FtOTRQU0l3SURBZ01Ua3lJREU1TWlJK1BISmxZM1FnZDJsa2RHZzlJakU1TWlJZ2FHVnBaMmgwUFNJeE9USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSTBNQ0krUkZJOEwzUmxlSFErUEM5emRtYysiLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifSwgeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0kxTVRJaUlHaGxhV2RvZEQwaU5URXlJaUIyYVdWM1FtOTRQU0l3SURBZ05URXlJRFV4TWlJK1BISmxZM1FnZDJsa2RHZzlJalV4TWlJZ2FHVnBaMmgwUFNJMU1USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSXhNREFpUGxKRVB3dmRHVjRkRDQ4TDNOMlp6ND0iLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifV19">
     <meta name="theme-color" content="#C9A962">
@@ -1084,20 +1264,60 @@
 
         function updateAuthUI() {
             const navIcons = document.querySelector('.nav-icons');
-            const existingAuth = navIcons.querySelector('.auth-user');
+            const existingAuth = navIcons.querySelector('.profile-avatar') || navIcons.querySelector('.auth-user');
             if (existingAuth) existingAuth.remove();
 
             if (currentUser) {
-                const authDiv = document.createElement('div');
-                authDiv.className = 'auth-user';
                 isAdmin = currentUser.email === 'nyousif539@gmail.com';
-                const adminBadge = isAdmin ? '<span class="admin-badge">ADMIN</span>' : '';
-                authDiv.innerHTML = `
-                    <span class="auth-user-name">${adminBadge}${currentUser.displayName || currentUser.email.split('@')[0]}</span>
-                    ${isAdmin ? `<button class="auth-user-btn" onclick="showAdminPage()"><i class="fas fa-shield-alt"></i> لوحة التحكم</button>` : ''}
-                    <button class="auth-user-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+                const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+                const firstLetter = displayName.charAt(0).toUpperCase();
+                const photoURL = currentUser.photoURL || localStorage.getItem('drProfilePhoto_' + currentUser.uid);
+
+                const avatarHtml = photoURL 
+                    ? `<img src="${photoURL}" class="profile-avatar-img" alt="Profile" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'profile-avatar-placeholder\'>${firstLetter}</div>';">`
+                    : `<div class="profile-avatar-placeholder">${firstLetter}</div>`;
+
+                const profileDiv = document.createElement('div');
+                profileDiv.className = 'profile-avatar';
+                profileDiv.innerHTML = `
+                    <div onclick="toggleProfileDropdown()">${avatarHtml}</div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-dropdown-header">
+                            ${photoURL 
+                                ? `<img src="${photoURL}" alt="Profile" onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder').style.display='flex';"><div class="placeholder" style="display:none;">${firstLetter}</div>`
+                                : `<div class="placeholder">${firstLetter}</div>`
+                            }
+                            <div class="profile-dropdown-info">
+                                <h4>${displayName}</h4>
+                                <p>${currentUser.email}</p>
+                            </div>
+                        </div>
+                        <button class="profile-dropdown-item" onclick="showProfileEdit(); toggleProfileDropdown();">
+                            <i class="fas fa-user-edit"></i> تعديل الملف الشخصي
+                        </button>
+                        <button class="profile-dropdown-item" onclick="showOrdersPage(); toggleProfileDropdown();">
+                            <i class="fas fa-box"></i> طلباتي
+                        </button>
+                        ${isAdmin ? `
+                        <button class="profile-dropdown-item" onclick="showAdminPage(); toggleProfileDropdown();">
+                            <i class="fas fa-shield-alt"></i> لوحة التحكم
+                        </button>` : ''}
+                        <div class="profile-dropdown-divider"></div>
+                        <button class="profile-dropdown-item" onclick="logout(); toggleProfileDropdown();" style="color: var(--danger);">
+                            <i class="fas fa-sign-out-alt" style="color: var(--danger);"></i> تسجيل الخروج
+                        </button>
+                    </div>
                 `;
-                navIcons.insertBefore(authDiv, navIcons.firstChild);
+                navIcons.insertBefore(profileDiv, navIcons.firstChild);
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('profileDropdown');
+                    const avatar = document.querySelector('.profile-avatar');
+                    if (dropdown && avatar && !avatar.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
             } else {
                 const authDiv = document.createElement('div');
                 authDiv.className = 'auth-user';
@@ -1106,7 +1326,99 @@
             }
         }
 
-        function showAuthModal() {
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) dropdown.classList.toggle('active');
+        }
+
+        function showProfileEdit() {
+            if (!currentUser) return;
+
+            // Load user data into form
+            document.getElementById('profileName').value = currentUser.displayName || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+
+            // Load saved profile data from localStorage
+            const savedProfile = JSON.parse(localStorage.getItem('drProfile_' + currentUser.uid) || '{}');
+            document.getElementById('profilePhone').value = savedProfile.phone || '';
+            document.getElementById('profileCity').value = savedProfile.city || '';
+            document.getElementById('profileAddress').value = savedProfile.address || '';
+
+            // Set avatar
+            const displayName = currentUser.displayName || currentUser.email.split('@')[0];
+            const firstLetter = displayName.charAt(0).toUpperCase();
+            const photoURL = currentUser.photoURL || localStorage.getItem('drProfilePhoto_' + currentUser.uid);
+            const avatarContainer = document.getElementById('profileEditAvatarContainer');
+
+            if (photoURL) {
+                avatarContainer.innerHTML = `<img src="${photoURL}" alt="Profile" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'placeholder\'>${firstLetter}</div>';">`;
+            } else {
+                avatarContainer.innerHTML = `<div class="placeholder">${firstLetter}</div>`;
+            }
+
+            document.getElementById('profileEditModal').classList.add('active');
+        }
+
+        async function saveProfile() {
+            if (!currentUser) return;
+
+            const name = document.getElementById('profileName').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
+            const city = document.getElementById('profileCity').value;
+            const address = document.getElementById('profileAddress').value.trim();
+
+            try {
+                // Update display name in Firebase Auth
+                if (name && name !== currentUser.displayName) {
+                    const { updateProfile } = window._firebaseFns;
+                    await updateProfile(currentUser, { displayName: name });
+                }
+
+                // Save additional data to localStorage
+                const profileData = { name, phone, city, address, updatedAt: new Date().toISOString() };
+                localStorage.setItem('drProfile_' + currentUser.uid, JSON.stringify(profileData));
+
+                // Update UI
+                updateAuthUI();
+                closeModal('profileEditModal');
+                showToast('تم حفظ التغييرات بنجاح!');
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showToast('حدث خطأ أثناء الحفظ', true);
+            }
+        }
+
+        function handleProfilePhotoChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('حجم الصورة كبير جداً (الحد الأقصى 2MB)', true);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const avatarContainer = document.getElementById('profileEditAvatarContainer');
+                avatarContainer.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+
+                // Save to localStorage (base64)
+                if (currentUser) {
+                    localStorage.setItem('drProfilePhoto_' + currentUser.uid, e.target.result);
+                }
+                showToast('تم تحميل الصورة! اضغط حفظ للتأكيد');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Load profile photo on auth state change
+        function loadProfilePhoto() {
+            if (!currentUser) return;
+            const savedPhoto = localStorage.getItem('drProfilePhoto_' + currentUser.uid);
+            if (savedPhoto && !currentUser.photoURL) {
+                currentUser.photoURL = savedPhoto;
+            }
+        }function showAuthModal() {
             authMode = 'login';
             document.getElementById('authTitle').textContent = 'تسجيل الدخول';
             document.getElementById('authBtnText').textContent = 'دخول';
@@ -1133,16 +1445,29 @@
                 const { auth } = window._firebase;
                 const { GoogleAuthProvider, signInWithPopup } = window._firebaseFns;
                 const provider = new GoogleAuthProvider();
-                provider.setCustomParameters({ prompt: 'select_account' });
+                provider.addScope('email');
+                provider.addScope('profile');
+                provider.setCustomParameters({ 
+                    prompt: 'select_account',
+                    login_hint: 'user@example.com'
+                });
 
-                await signInWithPopup(auth, provider);
-                showToast('تم تسجيل الدخول بحساب Google!');
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log('Google Sign-In Success:', user.email);
+                showToast('تم تسجيل الدخول بحساب Google! مرحباً ' + (user.displayName || user.email));
                 closeModal('authModal');
             } catch (error) {
+                console.error('Google Sign-In Error:', error.code, error.message);
                 let msg = 'حدث خطأ في تسجيل الدخول';
                 if (error.code === 'auth/popup-closed-by-user') msg = 'تم إغلاق النافذة';
-                else if (error.code === 'auth/popup-blocked') msg = 'تم حظر النافذة المنبثقة، فعّلها من إعدادات المتصفح';
-                else if (error.code === 'auth/account-exists-with-different-credential') msg = 'هذا البريد مسجل بطريقة أخرى';
+                else if (error.code === 'auth/popup-blocked') msg = 'تم حظر النافذة المنبثقة. فعّلها: اضغط 🔒 بجانب العنوان → Site settings → Pop-ups → Allow';
+                else if (error.code === 'auth/account-exists-with-different-credential') msg = 'هذا البريد مسجل بكلمة مرور. استخدم تسجيل الدخول بالبريد';
+                else if (error.code === 'auth/unauthorized-domain') msg = 'النطاق غير مصرح. أضفه في Firebase Console → Authentication → Settings → Authorized domains';
+                else if (error.code === 'auth/operation-not-allowed') msg = 'تسجيل Google غير مفعّل. فعّله في Firebase Console → Authentication → Sign-in method';
+                else if (error.code === 'auth/cancelled-popup-request') msg = 'تم إلغاء الطلب';
+                else if (error.code === 'auth/internal-error') msg = 'خطأ داخلي. جرّب متصفح آخر أو امسح الكوكيز';
+                else msg = 'خطأ: ' + error.message;
                 showToast(msg, true);
             } finally {
                 document.getElementById('authForm').style.display = 'block';
@@ -1387,6 +1712,65 @@
                 </div>
             </div>
             <button class="btn btn-primary" onclick="closeModal('iosInstallModal')" style="width: 100%;"><i class="fas fa-check"></i> فهمت</button>
+        </div>
+    </div>
+
+    
+    <!-- Profile Edit Modal -->
+    <div class="modal-overlay" id="profileEditModal">
+        <div class="modal" style="max-width: 450px;">
+            <h3 style="margin-bottom: 5px;"><i class="fas fa-user-edit" style="color: var(--gold);"></i> الملف الشخصي</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">عدّل بياناتك الشخصية</p>
+
+            <div class="profile-edit-avatar">
+                <div id="profileEditAvatarContainer">
+                    <!-- Avatar will be inserted here -->
+                </div>
+                <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleProfilePhotoChange(event)">
+                <button class="change-photo-btn" onclick="document.getElementById('profilePhotoInput').click()">
+                    <i class="fas fa-camera"></i> تغيير الصورة
+                </button>
+            </div>
+
+            <div class="form-group" style="text-align: right;">
+                <label>الاسم الكامل</label>
+                <input type="text" id="profileName" placeholder="محمد العلي">
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="profileEmail" disabled style="opacity: 0.6; cursor: not-allowed;">
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <label>رقم الموبايل</label>
+                <input type="tel" id="profilePhone" placeholder="07XX XXX XXXX">
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <label>المدينة</label>
+                <select id="profileCity">
+                    <option value="">اختر المدينة</option>
+                    <option value="بغداد">بغداد</option>
+                    <option value="البصرة">البصرة</option>
+                    <option value="أربيل">أربيل</option>
+                    <option value="الموصل">الموصل</option>
+                    <option value="النجف">النجف</option>
+                    <option value="كربلاء">كربلاء</option>
+                    <option value="السليمانية">السليمانية</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <label>العنوان</label>
+                <textarea id="profileAddress" placeholder="الحي - الشارع - أقرب نقطة دالة"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">
+                    <i class="fas fa-save"></i> حفظ التغييرات
+                </button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('profileEditModal')">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
         </div>
     </div>
 
