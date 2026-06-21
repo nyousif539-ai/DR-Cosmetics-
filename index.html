@@ -266,7 +266,28 @@
         @media (max-width: 768px) { nav { padding: 15px 20px; } .nav-links { display: none; } section { padding: 60px 20px; } .cart-sidebar { width: 100%; max-width: 100%; } .checkout-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .order-header { flex-direction: column; gap: 10px; align-items: flex-start; } }
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
+    
+        /* PWA Install */
+        .pwa-install-btn { position: relative; }
+        .pwa-install-btn::after { content: ''; position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .pwa-ios-modal .modal { max-width: 420px; text-align: right; }
+        .pwa-ios-modal .modal h3 { text-align: center; }
+        .pwa-ios-steps { margin: 20px 0; }
+        .pwa-ios-step { display: flex; align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid rgba(201,169,98,0.1); }
+        .pwa-ios-step:last-child { border-bottom: none; }
+        .pwa-ios-step i { color: var(--gold); font-size: 1.3rem; width: 30px; text-align: center; }
+        .pwa-ios-step span { flex: 1; }
+        .pwa-ios-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--black); border-radius: 10px; border: 1px solid rgba(201,169,98,0.2); }
+
     </style>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjogIkRSIENvc21ldGljcyIsICJzaG9ydF9uYW1lIjogIkRSIENvc21ldGljcyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGEwYTBhIiwgInRoZW1lX2NvbG9yIjogIiNDOUE5NjIiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0l4T1RJaUlHaGxhV2RvZEQwaU1Ua3lJaUIyYVdWM1FtOTRQU0l3SURBZ01Ua3lJREU1TWlJK1BISmxZM1FnZDJsa2RHZzlJakU1TWlJZ2FHVnBaMmgwUFNJeE9USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSTBNQ0krUkZJOEwzUmxlSFErUEM5emRtYysiLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifSwgeyJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0kxTVRJaUlHaGxhV2RvZEQwaU5URXlJaUIyYVdWM1FtOTRQU0l3SURBZ05URXlJRFV4TWlJK1BISmxZM1FnZDJsa2RHZzlJalV4TWlJZ2FHVnBaMmgwUFNJMU1USWlJR1pwYkd3OUlpTXdZVEJoTUdFaUx6NDhkR1Y0ZENCNFBTSTFNQ1VpSUhrOUlqVXdKU0lnWkc5dGFXNWhiblF0WW1GelpXeHBibVU5SW0xcFpHUnNaU0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJZ1ptbHNiRDBpSTBNNVFUazJNaUlnWm05dWRDMW1ZVzFwYkhrOUlrRnlhV0ZzSWlCbWIyNTBMWGRsYVdkb2REMGlZbTlzWkNJZ1ptOXVkQzF6YVhwbFBTSXhNREFpUGxKRVB3dmRHVjRkRDQ4TDNOMlp6ND0iLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3N2Zyt4bWwifV19">
+    <meta name="theme-color" content="#C9A962">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DR Cosmetics">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiMwYTBhMGEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0M5QTk2MiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1zaXplPSI0MCI+RFI8L3RleHQ+PC9zdmc+">
+<base target="_blank">
 </head>
 <body>
     <!-- Loader -->
@@ -282,6 +303,7 @@
             <li><a href="#" onclick="showOrdersPage(); return false;">طلباتي</a></li>
         </ul>
         <div class="nav-icons">
+            <button id="pwaInstallBtn" onclick="handlePWAInstall()" style="display:none;" title="تثبيت التطبيق"><i class="fas fa-download"></i></button>
             <button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></button>
         </div>
     </nav>
@@ -470,19 +492,19 @@
                 price: 60000,
                 oldPrice: 75000,
                 image: "perfume_tomford.jpg",
-                
-               
+                badge: "جديد",
+                rating: 4.9
             },
             {
-               id: 2,
-                brand: "CHANEL",
-                name: "كوكو مادموزيل",
-                desc: "عطر زهري شرقي أنثوي برائحة الورد والباتشولي",
-                price: 45000,
-                oldPrice: 55000,
+                id: 2,
+                brand: "CREED",
+                name: "أفنتوس",
+                desc: "عطر خشبي فواكهي أسطوري برائحة الأناناس",
+                price: 70000,
+                oldPrice: 85000,
                 image: null,
-                badge: null,
-                rating: 4.8
+                badge: "الأكثر مبيعاً",
+                rating: 5.0
             },
             {
                 id: 3,
@@ -499,7 +521,7 @@
                 id: 4,
                 brand: "DIOR",
                 name: "سوفاج",
-                desc: "عطر فواح وناعم للنساء الممحونات",
+                desc: "عطر خشبي حمضي جريء برائحة اللافندر",
                 price: 40000,
                 oldPrice: 50000,
                 image: null,
@@ -851,6 +873,129 @@
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.1 });
         setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el)); }, 100);
+    
+        // ═══════════════════════════════════════════════════════════════
+        // ║  PWA - تثبيت التطبيق على الجهاز                             ║
+        // ═══════════════════════════════════════════════════════════════
+
+        let deferredPrompt = null;
+        let isIOS = false;
+        let isStandalone = false;
+
+        // Detect iOS
+        function detectIOS() {
+            const ua = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(ua) && !window.MSStream;
+        }
+
+        // Detect standalone mode
+        function detectStandalone() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone === true;
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            const swCode = `const CACHE_NAME='dr-cosmetics-v1';self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))});self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});`;
+            const swBlob = new Blob([swCode], {type: 'text/javascript'});
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl).catch(()=>{});
+        }
+
+        // BeforeInstallPrompt event (Android/Chrome)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallButton();
+        });
+
+        // AppInstalled event
+        window.addEventListener('appinstalled', () => {
+            deferredPrompt = null;
+            hideInstallButton();
+            showToast('تم تثبيت التطبيق بنجاح!');
+        });
+
+        function showInstallButton() {
+            const btn = document.getElementById('pwaInstallBtn');
+            if (btn && !detectStandalone()) {
+                btn.style.display = 'flex';
+                btn.classList.add('pwa-install-btn');
+            }
+        }
+
+        function hideInstallButton() {
+            const btn = document.getElementById('pwaInstallBtn');
+            if (btn) btn.style.display = 'none';
+        }
+
+        function handlePWAInstall() {
+            isIOS = detectIOS();
+            isStandalone = detectStandalone();
+
+            if (isStandalone) {
+                showToast('التطبيق مثبت بالفعل!');
+                return;
+            }
+
+            if (isIOS) {
+                // Show iOS instructions
+                document.getElementById('iosInstallModal').classList.add('active');
+            } else if (deferredPrompt) {
+                // Show native install prompt (Android/Chrome)
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('جاري تثبيت التطبيق...');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                // Fallback for browsers that don't support beforeinstallprompt
+                showToast('افتح القائمة في المتصفح واختر "تثبيت التطبيق" أو "Add to Home Screen"');
+            }
+        }
+
+        // Check on load if we should show the install button
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                isIOS = detectIOS();
+                isStandalone = detectStandalone();
+
+                // Show install button if:
+                // 1. It's iOS (Safari) and not standalone
+                // 2. Or deferredPrompt is available (Android/Chrome)
+                if (!isStandalone) {
+                    if (isIOS || deferredPrompt) {
+                        showInstallButton();
+                    }
+                }
+            }, 3000);
+        });
+
     </script>
+
+    <!-- PWA iOS Install Modal -->
+    <div class="modal-overlay pwa-ios-modal" id="iosInstallModal">
+        <div class="modal">
+            <i class="fas fa-mobile-alt" style="color: var(--gold);"></i>
+            <h3>تثبيت التطبيق على iPhone</h3>
+            <div class="pwa-ios-steps">
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-icon"><i class="fas fa-share-square"></i></span>
+                    <span>اضغط على زر <strong>المشاركة</strong> في شريط Safari أسفل الشاشة</span>
+                </div>
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-icon"><i class="fas fa-plus-square"></i></span>
+                    <span>اختر <strong>إضافة إلى الشاشة الرئيسية</strong></span>
+                </div>
+                <div class="pwa-ios-step">
+                    <span class="pwa-ios-icon"><i class="fas fa-check-circle"></i></span>
+                    <span>اضغط <strong>إضافة</strong> في الأعلى</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="closeModal('iosInstallModal')" style="width: 100%;"><i class="fas fa-check"></i> فهمت</button>
+        </div>
+    </div>
 </body>
 </html>
