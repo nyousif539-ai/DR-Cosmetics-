@@ -910,11 +910,11 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>الاسم الأول <span class="required">*</span></label>
-                            <input type="text" id="firstName" placeholder="دكتور">
+                            <input type="text" id="firstName" placeholder="محمد">
                         </div>
                         <div class="form-group">
                             <label>الاسم الأخير <span class="required">*</span></label>
-                            <input type="text" id="lastName" placeholder="كوزمتك">
+                            <input type="text" id="lastName" placeholder="العلي">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1527,20 +1527,23 @@
             if (unsubscribeReviews) { unsubscribeReviews(); unsubscribeReviews = null; }
 
             const container = document.getElementById('reviewsList');
-            container.innerHTML = '<div class="reviews-empty"><i class="fas fa-spinner fa-spin"></i><p>جاري تحميل التقييمات...</p></div>';
+            container.innerHTML = '<div class="reviews-empty"><i class="fas fa-spinner fa-spin" style="color:var(--gold)"></i><p>جاري تحميل التقييمات...</p></div>';
 
             try {
                 const { db } = window._firebase;
-                const { collection, query, where, orderBy, onSnapshot } = window._firebaseFns;
+                const { collection, query, where, onSnapshot } = window._firebaseFns;
+
+                // Use only 'where' without 'orderBy' to avoid needing composite index
                 const q = query(
                     collection(db, 'productReviews'),
-                    where('productId', '==', productId),
-                    orderBy('timestamp', 'desc')
+                    where('productId', '==', productId)
                 );
 
                 unsubscribeReviews = onSnapshot(q, (snapshot) => {
                     currentReviews = [];
-                    snapshot.forEach(doc => currentReviews.push({ id: doc.id, ...doc.data() }));
+                    snapshot.forEach(docSnap => currentReviews.push({ id: docSnap.id, ...docSnap.data() }));
+                    // Sort in memory instead of Firestore
+                    currentReviews.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
                     renderReviewsList();
 
                     // Refresh product page rating
@@ -1549,11 +1552,23 @@
                     if (product) renderProductPage(product);
                 }, (err) => {
                     console.error('Reviews listener error:', err);
-                    container.innerHTML = '<div class="reviews-empty"><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i><p>حدث خطأ في تحميل التقييمات</p></div>';
+                    // Fallback: try to load from localStorage
+                    loadReviewsLocal(productId);
                 });
             } catch (e) {
-                container.innerHTML = '<div class="reviews-empty"><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i><p>حدث خطأ</p></div>';
+                console.error('Reviews setup error:', e);
+                loadReviewsLocal(productId);
             }
+        }
+
+        // Fallback: load reviews from localStorage
+        function loadReviewsLocal(productId) {
+            const allReviews = JSON.parse(localStorage.getItem('drProductReviews') || '{}');
+            currentReviews = (allReviews[productId] || []).map(r => ({
+                ...r,
+                id: r.id || generateReviewId()
+            }));
+            renderReviewsList();
         }
 
         function renderReviewsList() {
@@ -1641,7 +1656,6 @@
             }
 
             // New review
-            const reviewId = generateReviewId();
             const review = {
                 productId: currentProductId,
                 rating: parseInt(ratingEl.value),
@@ -1654,18 +1668,34 @@
             try {
                 const { db } = window._firebase;
                 const { collection, addDoc } = window._firebaseFns;
-                await addDoc(collection(db, 'productReviews'), review);
+                const docRef = await addDoc(collection(db, 'productReviews'), review);
 
-                // Mark this user as the owner of this review (for edit/delete)
-                localStorage.setItem(getReviewerKey(reviewId), 'true');
+                // Mark this user as the owner of this review (for edit/delete) using Firestore doc.id
+                localStorage.setItem(getReviewerKey(docRef.id), 'true');
 
                 document.getElementById('reviewText').value = '';
                 document.getElementById('reviewerName').value = '';
                 document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
                 showToast('تم إضافة تقييمك بنجاح!');
             } catch (e) {
-                console.error('Error saving review:', e);
-                showToast('حدث خطأ في حفظ التقييم', true);
+                console.error('Error saving review to Firestore:', e);
+                // Fallback: save to localStorage
+                const localId = generateReviewId();
+                review.id = localId;
+                const allReviews = JSON.parse(localStorage.getItem('drProductReviews') || '{}');
+                if (!allReviews[currentProductId]) allReviews[currentProductId] = [];
+                allReviews[currentProductId].unshift(review);
+                localStorage.setItem('drProductReviews', JSON.stringify(allReviews));
+                localStorage.setItem(getReviewerKey(localId), 'true');
+
+                // Add to current view
+                currentReviews.unshift({ id: localId, ...review });
+                renderReviewsList();
+
+                document.getElementById('reviewText').value = '';
+                document.getElementById('reviewerName').value = '';
+                document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+                showToast('تم حفظ التقييم محلياً');
             }
         }
 
@@ -1693,14 +1723,28 @@
 
         async function deleteReview(reviewId) {
             if (!confirm('هل أنت متأكد من حذف هذا التقييم؟')) return;
+
+            // Remove from localStorage first (always)
+            const allReviews = JSON.parse(localStorage.getItem('drProductReviews') || '{}');
+            if (allReviews[currentProductId]) {
+                allReviews[currentProductId] = allReviews[currentProductId].filter(r => r.id !== reviewId);
+                localStorage.setItem('drProductReviews', JSON.stringify(allReviews));
+            }
+            localStorage.removeItem(getReviewerKey(reviewId));
+
+            // Remove from current view immediately
+            currentReviews = currentReviews.filter(r => r.id !== reviewId);
+            renderReviewsList();
+
+            // Try Firestore delete
             try {
                 const { db } = window._firebase;
                 const { doc, deleteDoc } = window._firebaseFns;
                 await deleteDoc(doc(db, 'productReviews', reviewId));
-                localStorage.removeItem(getReviewerKey(reviewId));
                 showToast('تم حذف التقييم');
             } catch (e) {
-                showToast('حدث خطأ في الحذف', true);
+                console.error('Error deleting from Firestore:', e);
+                showToast('تم الحذف من التخزين المحلي');
             }
         }
 
