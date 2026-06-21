@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DR Cosmetics | عالم الجمال والفخامة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #C9A962;
+            --gold-light: #E8D5A3;
+            --gold-dark: #8B7355;
+            --black: #0a0a0a;
+            --dark: #121212;
+            --dark-light: #1a1a1a;
+            --text: #f0f0f0;
+            --text-muted: #888;
+            --success: #00C853;
+            --danger: #FF1744;
+            --warning: #FF9100;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--black);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed; inset: 0; background: var(--black);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-logo { font-size: 3rem; font-weight: 900; color: var(--gold); letter-spacing: 8px; animation: glow 2s ease-in-out infinite alternate; }
+        .loader-bar { width: 200px; height: 2px; background: var(--dark-light); margin: 20px auto; border-radius: 2px; overflow: hidden; }
+        .loader-bar-fill { height: 100%; width: 0%; background: var(--gold); animation: loadFill 2s ease forwards; }
+        @keyframes glow { from { text-shadow: 0 0 10px var(--gold); } to { text-shadow: 0 0 40px var(--gold); } }
+        @keyframes loadFill { to { width: 100%; } }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; transition: all 0.4s ease; background: transparent;
+        }
+        nav.scrolled { background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); padding: 15px 50px; border-bottom: 1px solid rgba(201,169,98,0.1); }
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--gold); letter-spacing: 4px; text-decoration: none; }
+        .logo span { color: var(--text); font-weight: 300; }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.95rem; font-weight: 500; position: relative; padding: 5px 0; transition: color 0.3s; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; right: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icons button { color: var(--text); font-size: 1.1rem; transition: color 0.3s; position: relative; background: none; border: none; cursor: pointer; }
+        .nav-icons button:hover { color: var(--gold); }
+        .cart-count {
+            position: absolute; top: -8px; right: -8px; background: var(--gold); color: var(--black);
+            font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Hero */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, var(--black) 0%, var(--dark) 50%, #1a1200 100%); }
+        .hero-content { text-align: center; z-index: 2; padding: 0 20px; }
+        .hero-subtitle { font-size: 1rem; color: var(--gold); letter-spacing: 8px; margin-bottom: 20px; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 1.1; margin-bottom: 30px; }
+        .hero-title .highlight { color: var(--gold); display: block; }
+        .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px; line-height: 1.8; }
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            padding: 15px 40px; font-size: 0.95rem; font-weight: 700; text-decoration: none;
+            border-radius: 50px; transition: all 0.4s ease; cursor: pointer; border: none;
+            font-family: 'Tajawal', sans-serif; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-primary { background: var(--gold); color: var(--black); }
+        .btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201,169,98,0.3); }
+        .btn-outline { background: transparent; color: var(--text); border: 2px solid var(--gold); }
+        .btn-outline:hover { background: var(--gold); color: var(--black); transform: translateY(-3px); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #ff4567; transform: translateY(-3px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #00e676; transform: translateY(-3px); }
+        .btn-warning { background: var(--warning); color: var(--black); }
+        .btn-sm { padding: 10px 25px; font-size: 0.85rem; }
+
+        /* Sections */
+        section { padding: 100px 50px; position: relative; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-label { font-size: 0.85rem; color: var(--gold); letter-spacing: 6px; margin-bottom: 15px; display: block; }
+        .section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px; }
+        .section-desc { color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.8; }
+
+        /* Products */
+        #perfumes { background: var(--dark); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .product-card {
+            background: var(--dark-light); border-radius: 20px; overflow: hidden;
+            transition: all 0.4s ease; border: 1px solid rgba(201,169,98,0.1); position: relative;
+        }
+        .product-card:hover { transform: translateY(-10px); border-color: rgba(201,169,98,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .product-image { height: 320px; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; padding: 20px; transition: transform 0.4s ease; }
+        .product-card:hover .product-image img { transform: scale(1.05); }
+        .product-image i { font-size: 4rem; color: var(--gold); opacity: 0.5; }
+        .product-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: var(--black); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 2; }
+        .product-actions { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%) translateY(20px); display: flex; gap: 10px; opacity: 0; transition: all 0.3s ease; z-index: 2; }
+        .product-card:hover .product-actions { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .action-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--black); color: var(--text); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; }
+        .action-btn:hover { background: var(--gold); color: var(--black); }
+        .product-info { padding: 25px; }
+        .product-brand { font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
+        .product-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+        .product-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.6; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
+        .product-price .old { font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; margin-right: 10px; }
+        .product-rating { color: var(--gold); font-size: 0.85rem; }
+        .currency-badge { display: inline-block; background: rgba(201,169,98,0.15); color: var(--gold); padding: 2px 10px; border-radius: 10px; font-size: 0.7rem; margin-right: 8px; font-weight: 500; }
+
+        /* Cart Sidebar */
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-sidebar { position: fixed; top: 0; left: 0; width: 400px; max-width: 90vw; height: 100vh; background: var(--dark-light); z-index: 3001; transform: translateX(-100%); transition: transform 0.4s ease; display: flex; flex-direction: column; border-right: 1px solid rgba(201,169,98,0.1); }
+        .cart-sidebar.active { transform: translateX(0); }
+        .cart-header { padding: 25px; border-bottom: 1px solid rgba(201,169,98,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { font-size: 1.3rem; }
+        .cart-close { background: none; border: none; color: var(--text); font-size: 1.3rem; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; gap: 15px; padding: 15px; background: var(--black); border-radius: 15px; margin-bottom: 15px; align-items: center; }
+        .cart-item img { width: 60px; height: 60px; object-fit: contain; border-radius: 10px; background: var(--dark-light); }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .cart-item-price { color: var(--gold); font-weight: 700; }
+        .cart-item-qty { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--gold); background: none; color: var(--gold); cursor: pointer; font-weight: 700; }
+        .cart-item-remove { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 1rem; }
+        .cart-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .cart-empty i { font-size: 3rem; margin-bottom: 15px; display: block; }
+        .cart-footer { padding: 25px; border-top: 1px solid rgba(201,169,98,0.1); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px; }
+        .cart-total span { color: var(--gold); }
+
+        /* Checkout Page (Full Page) */
+        .checkout-page {
+            position: fixed; inset: 0; background: var(--black); z-index: 2500;
+            overflow-y: auto; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        }
+        .checkout-page.active { opacity: 1; visibility: visible; }
+        .checkout-container {
+            max-width: 800px; margin: 0 auto; padding: 40px 20px;
+        }
+        .checkout-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid rgba(201,169,98,0.2);
+        }
+        .checkout-header h2 { font-size: 1.8rem; }
+        .checkout-back { background: none; border: none; color: var(--text); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .checkout-back:hover { color: var(--gold); }
+        .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        @media (max-width: 768px) { .checkout-grid { grid-template-columns: 1fr; } }
+
+        .checkout-section {
+            background: var(--dark-light); border-radius: 20px; padding: 30px;
+            border: 1px solid rgba(201,169,98,0.1);
+        }
+        .checkout-section h3 {
+            font-size: 1.2rem; margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(201,169,98,0.1); display: flex; align-items: center; gap: 10px;
+        }
+        .checkout-section h3 i { color: var(--gold); }
+
+        .checkout-item {
+            display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid rgba(201,169,98,0.05);
+        }
+        .checkout-item:last-child { border-bottom: none; }
+        .checkout-item-img { width: 70px; height: 70px; background: var(--black); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .checkout-item-img img { width: 50px; height: 50px; object-fit: contain; }
+        .checkout-item-info { flex: 1; }
+        .checkout-item-name { font-weight: 700; margin-bottom: 5px; }
+        .checkout-item-meta { color: var(--text-muted); font-size: 0.85rem; }
+        .checkout-item-price { color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+
+        .checkout-summary {
+            background: var(--black); border-radius: 15px; padding: 20px; margin-top: 20px;
+        }
+        .summary-row { display: flex; justify-content: space-between; padding: 10px 0; color: var(--text-muted); }
+        .summary-row.total { color: var(--text); font-size: 1.2rem; font-weight: 900; border-top: 2px solid var(--gold); margin-top: 10px; padding-top: 15px; }
+        .summary-row.total span { color: var(--gold); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        .form-group label .required { color: var(--danger); }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid rgba(201,169,98,0.2);
+            background: var(--black); color: var(--text); font-family: 'Tajawal', sans-serif;
+            font-size: 1rem; transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--gold); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .checkout-actions { display: flex; gap: 15px; margin-top: 30px; }
+        .checkout-actions .btn { flex: 1; justify-content: center; }
+
+        /* Orders Page */
+        .orders-page {
+            position: fixed; inset: 0; background: var(--black); z-index: 2600;
+            overflow-y: auto; opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        }
+        .orders-page.active { opacity: 1; visibility: visible; }
+        .orders-container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .orders-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid rgba(201,169,98,0.2); }
+        .orders-header h2 { font-size: 1.8rem; }
+        .order-card {
+            background: var(--dark-light); border-radius: 20px; padding: 30px;
+            border: 1px solid rgba(201,169,98,0.1); margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .order-card:hover { border-color: rgba(201,169,98,0.3); }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(201,169,98,0.1); }
+        .order-number { color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+        .order-status {
+            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+        }
+        .status-pending { background: rgba(255,145,0,0.15); color: var(--warning); }
+        .status-confirmed { background: rgba(0,200,83,0.15); color: var(--success); }
+        .status-cancelled { background: rgba(255,23,68,0.15); color: var(--danger); }
+        .order-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .order-detail { color: var(--text-muted); font-size: 0.9rem; }
+        .order-detail strong { color: var(--text); display: block; margin-bottom: 5px; }
+        .order-items-list { background: var(--black); border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .order-item-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(201,169,98,0.05); font-size: 0.9rem; }
+        .order-item-row:last-child { border-bottom: none; }
+        .order-total { display: flex; justify-content: space-between; font-weight: 900; color: var(--gold); font-size: 1.1rem; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(201,169,98,0.2); }
+        .order-actions { display: flex; gap: 10px; }
+        .order-actions .btn { padding: 10px 25px; font-size: 0.85rem; }
+        .orders-empty { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+        .orders-empty i { font-size: 4rem; margin-bottom: 20px; display: block; color: var(--gold); opacity: 0.5; }
+
+        /* Success Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 4000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal { background: var(--dark-light); border-radius: 25px; padding: 40px; max-width: 450px; width: 90%; border: 1px solid rgba(201,169,98,0.2); transform: scale(0.9); transition: transform 0.3s; text-align: center; }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal i { font-size: 4rem; color: var(--success); margin-bottom: 20px; }
+        .modal h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .modal p { color: var(--text-muted); margin-bottom: 25px; line-height: 1.8; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark-light); color: var(--text); padding: 15px 30px; border-radius: 50px; border: 1px solid var(--gold); z-index: 5000; opacity: 0; transition: all 0.4s ease; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast i { color: var(--gold); }
+        .toast.error { border-color: var(--danger); }
+        .toast.error i { color: var(--danger); }
+
+        /* Footer */
+        footer { background: var(--black); border-top: 1px solid rgba(201,169,98,0.1); padding: 60px 50px 30px; text-align: center; }
+
+        /* Responsive */
+        @media (max-width: 768px) { nav { padding: 15px 20px; } .nav-links { display: none; } section { padding: 60px 20px; } .cart-sidebar { width: 100%; max-width: 100%; } .checkout-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .checkout-actions { flex-direction: column; } .order-header { flex-direction: column; gap: 10px; align-items: flex-start; } }
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader"><div class="loader-content"><div class="loader-logo">DR</div><div class="loader-bar"><div class="loader-bar-fill"></div></div></div></div>
+
+    <!-- Nav -->
+    <nav id="navbar">
+        <a href="#" class="logo">DR <span>COSMETICS</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#perfumes">العطور</a></li>
+            <li><a href="#makeup">المكياج</a></li>
+            <li><a href="#" onclick="showOrdersPage(); return false;">طلباتي</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button onclick="toggleCart()"><i class="fas fa-shopping-bag"></i><span class="cart-count" id="cartCount">0</span></button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <p class="hero-subtitle">فخامة لا تُضاهى</p>
+            <h1 class="hero-title">اكتشفي جمالك <span class="highlight">الحقيقي</span></h1>
+            <p class="hero-desc">مجموعة حصرية من أرقى العطور والمكياج العالمي، مختارة بعناية لأجلك.</p>
+            <div class="hero-btns">
+                <a href="#perfumes" class="btn btn-primary"><i class="fas fa-sparkles"></i> استكشفي العطور</a>
+                <a href="#makeup" class="btn btn-outline"><i class="fas fa-palette"></i> المكياج</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perfumes -->
+    <section id="perfumes">
+        <div class="section-header reveal">
+            <span class="section-label">عالم العطور</span>
+            <h2 class="section-title">أرقى <span style="color: var(--gold)">العطور</span> العالمية</h2>
+        </div>
+        <div class="products-grid" id="perfumesGrid"></div>
+    </section>
+
+    <!-- Makeup -->
+    <section id="makeup">
+        <div class="section-header reveal">
+            <span class="section-label">إطلالة مثالية</span>
+            <h2 class="section-title">عالم <span style="color: var(--gold)">المكياج</span></h2>
+        </div>
+        <div class="products-grid" id="makeupGrid"></div>
+    </section>
+
+    <!-- Private -->
+    <section id="private">
+        <div class="section-header reveal">
+            <span class="section-label">حصرياً لكِ</span>
+            <h2 class="section-title">المجموعة <span style="color: var(--gold)">الخاصة</span></h2>
+        </div>
+        <div style="text-align: center; max-width: 600px; margin: 0 auto; color: var(--text-muted);">
+            <i class="fas fa-lock" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px; display: block;"></i>
+            <p>سجّلي دخولكِ للوصول إلى المجموعة الخاصة والعروض الحصرية</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <a href="#" class="logo" style="margin-bottom: 20px; display: inline-block;">DR <span>COSMETICS</span></a>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">وجهتكِ الأولى للعطور والمكياج الفاخر</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">© 2026 DR Cosmetics</p>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3><i class="fas fa-shopping-bag"></i> سلة التسوق</h3><button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button></div>
+        <div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>السلة فارغة</p></div></div>
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total"><span>المجموع:</span><span id="cartTotal">0 د.ع</span></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="showCheckoutPage()"><i class="fas fa-credit-card"></i> إتمام الطلب</button>
+        </div>
+    </div>
+
+    <!-- Checkout Full Page -->
+    <div class="checkout-page" id="checkoutPage">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h2><i class="fas fa-credit-card" style="color: var(--gold);"></i> إتمام الطلب</h2>
+                <button class="checkout-back" onclick="closeCheckoutPage()"><i class="fas fa-arrow-right"></i> العودة للسلة</button>
+            </div>
+            <div class="checkout-grid">
+                <!-- Order Summary -->
+                <div class="checkout-section">
+                    <h3><i class="fas fa-shopping-bag"></i> ملخص الطلب</h3>
+                    <div id="checkoutItems"></div>
+                    <div class="checkout-summary">
+                        <div class="summary-row"><span>المجموع الفرعي</span><span id="subTotal">0 د.ع</span></div>
+                        <div class="summary-row"><span>التوصيل</span><span style="color: var(--success);">مجاني</span></div>
+                        <div class="summary-row total"><span>المجموع الكلي</span><span id="checkoutTotal">0 د.ع</span></div>
+                    </div>
+                </div>
+                <!-- Customer Info -->
+                <div class="checkout-section">
+                    <h3><i class="fas fa-user"></i> بيانات الزبون</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم الأول <span class="required">*</span></label>
+                            <input type="text" id="firstName" placeholder="محمد">
+                        </div>
+                        <div class="form-group">
+                            <label>الاسم الأخير <span class="required">*</span></label>
+                            <input type="text" id="lastName" placeholder="العلي">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الموبايل <span class="required">*</span></label>
+                        <input type="tel" id="phone" placeholder="07XX XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الموبايل الثاني (اختياري)</label>
+                        <input type="tel" id="phone2" placeholder="07XX XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>المدينة <span class="required">*</span></label>
+                        <select id="city">
+                            <option value="">اختر المدينة</option>
+                            <option value="بغداد">بغداد</option>
+                            <option value="البصرة">البصرة</option>
+                            <option value="أربيل">أربيل</option>
+                            <option value="الموصل">الموصل</option>
+                            <option value="النجف">النجف</option>
+                            <option value="كربلاء">كربلاء</option>
+                            <option value="السليمانية">السليمانية</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان التفصيلي <span class="required">*</span></label>
+                        <textarea id="address" placeholder="الحي - الشارع - أقرب نقطة دالة - رقم الدار"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ملاحظات (اختياري)</label>
+                        <textarea id="notes" placeholder="أي ملاحظات خاصة بالطلب..."></textarea>
+                    </div>
+                    <div class="checkout-actions">
+                        <button class="btn btn-primary" onclick="submitOrder()"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
+                        <button class="btn btn-danger" onclick="cancelOrder()"><i class="fas fa-times"></i> إلغاء الطلب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Page -->
+    <div class="orders-page" id="ordersPage">
+        <div class="orders-container">
+            <div class="orders-header">
+                <h2><i class="fas fa-box" style="color: var(--gold);"></i> طلباتي</h2>
+                <button class="checkout-back" onclick="closeOrdersPage()"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+            </div>
+            <div id="ordersList"></div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <i class="fas fa-check-circle"></i>
+            <h3>تم إرسال طلبك بنجاح!</h3>
+            <p>رقم الطلب: <strong id="orderNumber" style="color: var(--gold);"></strong><br>سنتواصل معكِ قريباً لتأكيد الطلب</p>
+            <button class="btn btn-primary" onclick="closeSuccessModal()"><i class="fas fa-home"></i> العودة للرئيسية</button>
+            <button class="btn btn-outline" style="margin-top: 10px;" onclick="showOrdersPageFromSuccess()"><i class="fas fa-box"></i> مشاهدة طلباتي</button>
+        </div>
+    </div>
+
+    <!-- Cancel Confirm Modal -->
+    <div class="modal-overlay" id="cancelModal">
+        <div class="modal">
+            <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+            <h3>تأكيد الإلغاء</h3>
+            <p>هل أنت متأكدة من إلغاء هذا الطلب؟</p>
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button class="btn btn-danger" style="flex: 1;" onclick="confirmCancel()" id="confirmCancelBtn"><i class="fas fa-check"></i> نعم، إلغاء</button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('cancelModal')"><i class="fas fa-times"></i> لا، تراجع</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastText">تمت الإضافة!</span></div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // ║  هنا تعدل المنتجات - سهل جداً!                              ║
+        // ═══════════════════════════════════════════════════════════════
+
+        const perfumes = [
+            {
+                id: 1,
+                brand: "TOM FORD",
+                name: "Eau d'Ombré Leather",
+                desc: "عطر جلدي فاخر بمزيج من الجلد الأسود والباتشولي",
+                price: 60000,
+                oldPrice: 75000,
+                image: "perfume_tomford.jpg",
+                badge: "جديد",
+                rating: 4.9
+            },
+            {
+                id: 2,
+                brand: "CREED",
+                name: "أفنتوس",
+                desc: "عطر خشبي فواكهي أسطوري برائحة الأناناس",
+                price: 70000,
+                oldPrice: 85000,
+                image: null,
+                badge: "الأكثر مبيعاً",
+                rating: 5.0
+            },
+            {
+                id: 3,
+                brand: "CHANEL",
+                name: "كوكو مادموزيل",
+                desc: "عطر زهري شرقي أنثوي برائحة الورد والباتشولي",
+                price: 45000,
+                oldPrice: 55000,
+                image: null,
+                badge: null,
+                rating: 4.8
+            },
+            {
+                id: 4,
+                brand: "DIOR",
+                name: "سوفاج",
+                desc: "عطر خشبي حمضي جريء برائحة اللافندر",
+                price: 40000,
+                oldPrice: 50000,
+                image: null,
+                badge: "محدود",
+                rating: 4.7
+            }
+        ];
+
+        const makeup = [
+            {
+                id: 5,
+                brand: "MAC",
+                name: "كريم أساس Studio Fix",
+                desc: "كريم أساس احترافي يدوم 24 ساعة",
+                price: 15000,
+                oldPrice: 18000,
+                image: null,
+                badge: "جديد",
+                rating: 4.6
+            },
+            {
+                id: 6,
+                brand: "HUDA BEAUTY",
+                name: "باليت ظلال عيون",
+                desc: "18 لون غني بأصباغ عالية",
+                price: 25000,
+                oldPrice: 30000,
+                image: null,
+                badge: null,
+                rating: 4.8
+            },
+            {
+                id: 7,
+                brand: "NARS",
+                name: "أحمر شفاه Audacious",
+                desc: "صبغة غنية بلمسة مخملية",
+                price: 12000,
+                oldPrice: 15000,
+                image: null,
+                badge: null,
+                rating: 4.5
+            },
+            {
+                id: 8,
+                brand: "CHARLOTTE TILBURY",
+                name: "هايلايتر Hollywood",
+                desc: "إضاءة ذهبية ساحرة للوجه",
+                price: 18000,
+                oldPrice: 22000,
+                image: null,
+                badge: "محدود",
+                rating: 4.9
+            }
+        ];
+
+        // ═══════════════════════════════════════════════════════════════
+        // ║  ما تحتاج تعدل أي شي تحت هذا السطر!                        ║
+        // ═══════════════════════════════════════════════════════════════
+
+        let cart = JSON.parse(localStorage.getItem('drCart')) || [];
+        let orders = JSON.parse(localStorage.getItem('drOrders')) || [];
+        let cancelOrderId = null;
+
+        function renderProducts() {
+            document.getElementById('perfumesGrid').innerHTML = perfumes.map(p => createCard(p)).join('');
+            document.getElementById('makeupGrid').innerHTML = makeup.map(p => createCard(p)).join('');
+        }
+
+        function createCard(p) {
+            const imgHtml = p.image 
+                ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'; this.parentElement.innerHTML += '<i class=\'fas fa-spray-can\' style=\'font-size:4rem;color:var(--gold);opacity:0.5\'></i>'">`
+                : `<i class="fas fa-spray-can" style="font-size:4rem;color:var(--gold);opacity:0.5"></i>`;
+            const badgeHtml = p.badge ? `<span class="product-badge">${p.badge}</span>` : '';
+            return `
+                <div class="product-card reveal">
+                    <div class="product-image">
+                        ${imgHtml}
+                        ${badgeHtml}
+                        <div class="product-actions">
+                            <button class="action-btn" onclick="addToCart(${p.id})"><i class="fas fa-shopping-bag"></i></button>
+                            <button class="action-btn" onclick="showToast('تمت الإضافة للمفضلة')"><i class="fas fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-brand">${p.brand}</p>
+                        <h3 class="product-name">${p.name}</h3>
+                        <p class="product-desc">${p.desc}</p>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <span class="old">${p.oldPrice.toLocaleString()} د.ع</span>
+                                ${p.price.toLocaleString()} <span class="currency-badge">د.ع</span>
+                            </div>
+                            <div class="product-rating"><i class="fas fa-star"></i> ${p.rating}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const allProducts = [...perfumes, ...makeup];
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            const existing = cart.find(item => item.id === productId);
+            if (existing) { existing.qty++; } else { cart.push({ ...product, qty: 1 }); }
+            saveCart(); updateCartUI(); showToast(`تمت إضافة ${product.name}`);
+        }
+        function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); saveCart(); updateCartUI(); }
+        function updateQty(productId, delta) {
+            const item = cart.find(item => item.id === productId);
+            if (item) { item.qty += delta; if (item.qty <= 0) { removeFromCart(productId); return; } saveCart(); updateCartUI(); }
+        }
+        function saveCart() { localStorage.setItem('drCart', JSON.stringify(cart)); }
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').textContent = count;
+            const itemsContainer = document.getElementById('cartItems');
+            const footer = document.getElementById('cartFooter');
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>السلة فارغة</p></div>`;
+                footer.style.display = 'none'; return;
+            }
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div style="width:60px;height:60px;background:var(--dark-light);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                        ${item.image ? `<img src="${item.image}" style="width:50px;height:50px;object-fit:contain;">` : `<i class="fas fa-spray-can" style="color:var(--gold)"></i>`}
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">${(item.price * item.qty).toLocaleString()} د.ع</div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+            document.getElementById('cartTotal').textContent = total.toLocaleString() + ' د.ع';
+            footer.style.display = 'block';
+        }
+        function toggleCart() {
+            document.getElementById('cartOverlay').classList.toggle('active');
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        // Checkout Page
+        function showCheckoutPage() {
+            if (cart.length === 0) { showToast('السلة فارغة!'); return; }
+            toggleCart(); // Close cart sidebar
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const subTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            document.getElementById('checkoutItems').innerHTML = cart.map(item => `
+                <div class="checkout-item">
+                    <div class="checkout-item-img">
+                        ${item.image ? `<img src="${item.image}">` : `<i class="fas fa-spray-can" style="color:var(--gold);font-size:1.5rem;"></i>`}
+                    </div>
+                    <div class="checkout-item-info">
+                        <div class="checkout-item-name">${item.name}</div>
+                        <div class="checkout-item-meta">${item.brand} × ${item.qty}</div>
+                    </div>
+                    <div class="checkout-item-price">${(item.price * item.qty).toLocaleString()} د.ع</div>
+                </div>
+            `).join('');
+
+            document.getElementById('subTotal').textContent = subTotal.toLocaleString() + ' د.ع';
+            document.getElementById('checkoutTotal').textContent = total.toLocaleString() + ' د.ع';
+            document.getElementById('checkoutPage').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCheckoutPage() {
+            document.getElementById('checkoutPage').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function cancelOrder() {
+            if (confirm('هل أنت متأكدة من إلغاء الطلب؟ سيتم مسح محتويات السلة.')) {
+                cart = [];
+                saveCart();
+                updateCartUI();
+                closeCheckoutPage();
+                showToast('تم إلغاء الطلب', true);
+            }
+        }
+
+        function submitOrder() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const city = document.getElementById('city').value;
+            const address = document.getElementById('address').value.trim();
+
+            if (!firstName || !lastName || !phone || !city || !address) {
+                showToast('يرجى ملء جميع الحقول المطلوبة', true); return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const orderNumber = 'DR-' + Date.now().toString().slice(-6);
+            const notes = document.getElementById('notes').value.trim();
+            const phone2 = document.getElementById('phone2').value.trim();
+
+            const orderData = {
+                orderNumber,
+                customerName: firstName + ' ' + lastName,
+                phone,
+                phone2: phone2 || null,
+                city,
+                address,
+                notes: notes || null,
+                items: cart.map(item => ({ name: item.name, brand: item.brand, price: item.price, qty: item.qty, total: item.price * item.qty })),
+                totalAmount: total,
+                status: 'pending',
+                statusText: 'قيد الانتظار',
+                date: new Date().toLocaleString('ar-IQ'),
+                timestamp: Date.now()
+            };
+
+            orders.unshift(orderData);
+            localStorage.setItem('drOrders', JSON.stringify(orders));
+
+            cart = []; saveCart(); updateCartUI();
+            closeCheckoutPage();
+            document.getElementById('orderNumber').textContent = orderNumber;
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        // Orders Page
+        function showOrdersPage() {
+            renderOrders();
+            document.getElementById('ordersPage').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showOrdersPageFromSuccess() {
+            closeModal('successModal');
+            showOrdersPage();
+        }
+
+        function closeOrdersPage() {
+            document.getElementById('ordersPage').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersList');
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="orders-empty">
+                        <i class="fas fa-box-open"></i>
+                        <h3>لا توجد طلبات</h3>
+                        <p>لم تقومي بأي طلبات بعد. استكشفي منتجاتنا واطلبي الآن!</p>
+                        <button class="btn btn-primary" style="margin-top: 20px;" onclick="closeOrdersPage(); window.location.href='#perfumes';">
+                            <i class="fas fa-shopping-bag"></i> تسوقي الآن
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const statusClass = order.status === 'pending' ? 'status-pending' : 
+                                   order.status === 'confirmed' ? 'status-confirmed' : 'status-cancelled';
+                const canCancel = order.status === 'pending';
+
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">طلب #${order.orderNumber}</div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">${order.date}</div>
+                            </div>
+                            <span class="order-status ${statusClass}">${order.statusText}</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-detail"><strong>الاسم</strong>${order.customerName}</div>
+                            <div class="order-detail"><strong>الموبايل</strong>${order.phone}</div>
+                            <div class="order-detail"><strong>المدينة</strong>${order.city}</div>
+                            <div class="order-detail"><strong>العنوان</strong>${order.address}</div>
+                        </div>
+                        <div class="order-items-list">
+                            ${order.items.map(item => `
+                                <div class="order-item-row">
+                                    <span>${item.name} × ${item.qty}</span>
+                                    <span>${item.total.toLocaleString()} د.ع</span>
+                                </div>
+                            `).join('')}
+                            <div class="order-total"><span>المجموع</span><span>${order.totalAmount.toLocaleString()} د.ع</span></div>
+                        </div>
+                        ${canCancel ? `
+                            <div class="order-actions">
+                                <button class="btn btn-danger btn-sm" onclick="requestCancel('${order.orderNumber}')">
+                                    <i class="fas fa-times"></i> إلغاء الطلب
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function requestCancel(orderNumber) {
+            cancelOrderId = orderNumber;
+            document.getElementById('cancelModal').classList.add('active');
+        }
+
+        function confirmCancel() {
+            if (!cancelOrderId) return;
+            const order = orders.find(o => o.orderNumber === cancelOrderId);
+            if (order) {
+                order.status = 'cancelled';
+                order.statusText = 'ملغي';
+                localStorage.setItem('drOrders', JSON.stringify(orders));
+                renderOrders();
+                showToast('تم إلغاء الطلب');
+            }
+            cancelOrderId = null;
+            closeModal('cancelModal');
+        }
+
+        // UI Helpers
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+        function closeSuccessModal() { closeModal('successModal'); }
+        function showToast(text, isError) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastText').textContent = text;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+        });
+
+        // Init
+        window.addEventListener('load', () => {
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
+            renderProducts(); updateCartUI();
+        });
+        window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el)); }, 100);
+    </script>
+</body>
+</html>
