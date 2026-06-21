@@ -492,6 +492,82 @@
 
 
         /* ═══════════════════════════════════════════════════════════ */
+        /* ════════════════════════════════════════════ */
+        /* ║  Slim Buttons - نحيفة وأنيقة             ║ */
+        /* ════════════════════════════════════════════ */
+        .btn-slim {
+            padding: 7px 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Tajawal', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1.4;
+        }
+        .btn-slim i { font-size: 0.7rem; }
+        .btn-slim:hover { transform: translateY(-2px); }
+
+        .btn-slim-danger {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid rgba(255,23,68,0.3);
+        }
+        .btn-slim-danger:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn-slim-success {
+            background: transparent;
+            color: var(--success);
+            border: 1px solid rgba(0,200,83,0.3);
+        }
+        .btn-slim-success:hover {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-slim-primary {
+            background: var(--gold);
+            color: var(--black);
+            font-weight: 700;
+        }
+        .btn-slim-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201,169,98,0.3);
+        }
+
+        .btn-slim-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid rgba(201,169,98,0.3);
+        }
+        .btn-slim-outline:hover {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .btn-slim-outline-light {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.7rem;
+            padding: 5px 14px;
+        }
+        .btn-slim-outline-light:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
         /* ║  Product Detail Page                                     ║ */
         /* ═══════════════════════════════════════════════════════════ */
 
@@ -909,8 +985,8 @@
             <h3>تأكيد الإلغاء</h3>
             <p>هل أنت متأكدة من إلغاء هذا الطلب؟</p>
             <div style="display: flex; gap: 15px; margin-top: 25px;">
-                <button class="btn btn-danger" style="flex: 1;" onclick="confirmCancel()" id="confirmCancelBtn"><i class="fas fa-check"></i> نعم، إلغاء</button>
-                <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('cancelModal')"><i class="fas fa-times"></i> لا، تراجع</button>
+                <button class="btn-slim btn-slim-danger" style="flex: 1; justify-content: center;" onclick="confirmCancel()" id="confirmCancelBtn"><i class="fas fa-check"></i> نعم، إلغاء</button>
+                <button class="btn-slim btn-slim-outline" style="flex: 1; justify-content: center;" onclick="closeModal('cancelModal')"><i class="fas fa-times"></i> لا، تراجع</button>
             </div>
         </div>
     </div>
@@ -1208,6 +1284,11 @@
         function closeOrdersPage() {
             document.getElementById('ordersPage').classList.remove('active');
             document.body.style.overflow = '';
+            // Stop real-time listener to save bandwidth
+            if (unsubscribeOrders) {
+                unsubscribeOrders();
+                unsubscribeOrders = null;
+            }
         }
 
         function renderOrders() {
@@ -1257,8 +1338,8 @@
                         </div>
                         ${canCancel ? `
                             <div class="order-actions">
-                                <button class="btn btn-danger btn-sm" onclick="requestCancel('${order.orderNumber}')">
-                                    <i class="fas fa-times"></i> إلغاء الطلب
+                                <button class="btn-slim btn-slim-danger" onclick="requestCancel('${order.orderNumber}')">
+                                    <i class="fas fa-times"></i> إلغاء
                                 </button>
                             </div>
                         ` : ''}
@@ -1272,16 +1353,31 @@
             document.getElementById('cancelModal').classList.add('active');
         }
 
-        function confirmCancel() {
+        async function confirmCancel() {
             if (!cancelOrderId) return;
-            const order = orders.find(o => o.orderNumber === cancelOrderId);
-            if (order) {
-                order.status = 'cancelled';
-                order.statusText = 'ملغي';
-                localStorage.setItem('drOrders', JSON.stringify(orders));
-                renderOrders();
-                showToast('تم إلغاء الطلب');
+
+            // Delete from Firestore completely
+            try {
+                const { db } = window._firebase;
+                const { collection, getDocs, query, where, deleteDoc, doc } = window._firebaseFns;
+                const q = query(collection(db, 'orders'), where('orderNumber', '==', cancelOrderId));
+                const snapshot = await getDocs(q);
+
+                if (!snapshot.empty) {
+                    const docId = snapshot.docs[0].id;
+                    await deleteDoc(doc(db, 'orders', docId));
+                    showToast('تم حذف الطلب من السستم');
+                }
+            } catch (error) {
+                console.error('Error deleting order:', error);
+                showToast('حدث خطأ في الحذف من السحابة', true);
             }
+
+            // Remove from localStorage
+            orders = orders.filter(o => o.orderNumber !== cancelOrderId);
+            localStorage.setItem('drOrders', JSON.stringify(orders));
+            renderOrders();
+
             cancelOrderId = null;
             closeModal('cancelModal');
         }
@@ -1339,7 +1435,7 @@
 
             currentProductId = productId;
             renderProductPage(product);
-            loadReviews(productId);
+            loadReviewsRealtime(productId);
 
             document.getElementById('productPage').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1350,19 +1446,19 @@
             document.getElementById('productPage').classList.remove('active');
             document.body.style.overflow = '';
             currentProductId = null;
+            editingReviewId = null;
+            // Stop reviews listener
+            if (unsubscribeReviews) { unsubscribeReviews(); unsubscribeReviews = null; }
             // Clear review form
-            document.getElementById('reviewText').value = '';
-            document.getElementById('reviewerName').value = '';
-            document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+            cancelEditReview();
         }
 
         function renderProductPage(product) {
-            // Calculate average rating from reviews
-            const reviews = getReviewsForProduct(product.id);
-            const avgRating = reviews.length > 0
-                ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+            // Calculate average rating from currentReviews (Firestore realtime data)
+            const avgRating = currentReviews.length > 0
+                ? (currentReviews.reduce((sum, r) => sum + r.rating, 0) / currentReviews.length).toFixed(1)
                 : product.rating;
-            const reviewCount = reviews.length;
+            const reviewCount = currentReviews.length;
 
             // Generate stars HTML
             const fullStars = Math.floor(avgRating);
@@ -1410,24 +1506,60 @@
             `;
         }
 
-        // Reviews System
-        function getReviewsForProduct(productId) {
-            const allReviews = JSON.parse(localStorage.getItem('drProductReviews') || '{}');
-            return allReviews[productId] || [];
+        // ═══════════════════════════════════════════════════════════
+        // ║  Reviews System - Firebase Firestore (Global)           ║
+        // ═══════════════════════════════════════════════════════════
+
+        let currentReviews = [];
+        let editingReviewId = null;
+        let unsubscribeReviews = null;
+
+        function generateReviewId() {
+            return 'rev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        function saveReview(productId, review) {
-            const allReviews = JSON.parse(localStorage.getItem('drProductReviews') || '{}');
-            if (!allReviews[productId]) allReviews[productId] = [];
-            allReviews[productId].unshift(review);
-            localStorage.setItem('drProductReviews', JSON.stringify(allReviews));
+        function getReviewerKey(reviewId) {
+            return 'drReviewOwner_' + reviewId;
         }
 
-        function loadReviews(productId) {
-            const reviews = getReviewsForProduct(productId);
+        function loadReviewsRealtime(productId) {
+            // Stop previous listener
+            if (unsubscribeReviews) { unsubscribeReviews(); unsubscribeReviews = null; }
+
+            const container = document.getElementById('reviewsList');
+            container.innerHTML = '<div class="reviews-empty"><i class="fas fa-spinner fa-spin"></i><p>جاري تحميل التقييمات...</p></div>';
+
+            try {
+                const { db } = window._firebase;
+                const { collection, query, where, orderBy, onSnapshot } = window._firebaseFns;
+                const q = query(
+                    collection(db, 'productReviews'),
+                    where('productId', '==', productId),
+                    orderBy('timestamp', 'desc')
+                );
+
+                unsubscribeReviews = onSnapshot(q, (snapshot) => {
+                    currentReviews = [];
+                    snapshot.forEach(doc => currentReviews.push({ id: doc.id, ...doc.data() }));
+                    renderReviewsList();
+
+                    // Refresh product page rating
+                    const allProducts = [...perfumes, ...makeup];
+                    const product = allProducts.find(p => p.id === currentProductId);
+                    if (product) renderProductPage(product);
+                }, (err) => {
+                    console.error('Reviews listener error:', err);
+                    container.innerHTML = '<div class="reviews-empty"><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i><p>حدث خطأ في تحميل التقييمات</p></div>';
+                });
+            } catch (e) {
+                container.innerHTML = '<div class="reviews-empty"><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i><p>حدث خطأ</p></div>';
+            }
+        }
+
+        function renderReviewsList() {
             const container = document.getElementById('reviewsList');
 
-            if (reviews.length === 0) {
+            if (currentReviews.length === 0) {
                 container.innerHTML = `
                     <div class="reviews-empty">
                         <i class="fas fa-comment-slash"></i>
@@ -1438,18 +1570,19 @@
                 return;
             }
 
-            container.innerHTML = reviews.map(review => {
+            container.innerHTML = currentReviews.map(review => {
                 const fullStars = review.rating;
                 let starsHtml = '';
                 for (let i = 1; i <= 5; i++) {
-                    starsHtml += i <= fullStars
-                        ? '<i class="fas fa-star"></i>'
-                        : '<i class="far fa-star"></i>';
+                    starsHtml += i <= fullStars ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
                 }
                 const firstLetter = review.name ? review.name.charAt(0).toUpperCase() : 'م';
 
+                // Check if this user owns the review (can edit/delete)
+                const isOwner = localStorage.getItem(getReviewerKey(review.id)) === 'true';
+
                 return `
-                    <div class="review-card">
+                    <div class="review-card" id="review-${review.id}">
                         <div class="review-header">
                             <div class="review-author">
                                 <div class="review-avatar">${firstLetter}</div>
@@ -1458,31 +1591,59 @@
                                     <div class="review-stars">${starsHtml}</div>
                                 </div>
                             </div>
-                            <span class="review-date">${review.date}</span>
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <span class="review-date">${review.date}</span>
+                                ${isOwner ? `
+                                    <div class="review-actions-menu" style="display:flex;gap:6px;">
+                                        <button class="action-btn" style="width:28px;height:28px;font-size:0.75rem;" onclick="editReview('${review.id}', ${review.rating}, '${review.text?.replace(/'/g, "\'") || ''}')" title="تعديل">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" style="width:28px;height:28px;font-size:0.75rem;color:var(--danger);" onclick="deleteReview('${review.id}')" title="حذف">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                ` : ''}
+                            </div>
                         </div>
-                        <p class="review-text">${review.text}</p>
+                        <p class="review-text" id="reviewText-${review.id}">${review.text || ''}</p>
                     </div>
                 `;
             }).join('');
         }
 
-        function submitReview() {
+        async function submitReview() {
             if (!currentProductId) return;
 
             const ratingEl = document.querySelector('input[name="rating"]:checked');
             const text = document.getElementById('reviewText').value.trim();
             const name = document.getElementById('reviewerName').value.trim();
 
-            if (!ratingEl) {
-                showToast('يرجى اختيار عدد النجوم', true);
-                return;
-            }
-            if (!text) {
-                showToast('يرجى كتابة نص التقييم', true);
+            if (!ratingEl) { showToast('يرجى اختيار عدد النجوم', true); return; }
+            if (!text) { showToast('يرجى كتابة نص التقييم', true); return; }
+
+            // If editing existing review
+            if (editingReviewId) {
+                try {
+                    const { db } = window._firebase;
+                    const { doc, updateDoc } = window._firebaseFns;
+                    await updateDoc(doc(db, 'productReviews', editingReviewId), {
+                        rating: parseInt(ratingEl.value),
+                        text: text,
+                        name: name || 'مستخدم',
+                        editedAt: new Date().toISOString()
+                    });
+                    cancelEditReview();
+                    showToast('تم تعديل تقييمك!');
+                } catch (e) {
+                    showToast('حدث خطأ في التعديل', true);
+                }
                 return;
             }
 
+            // New review
+            const reviewId = generateReviewId();
             const review = {
+                productId: currentProductId,
                 rating: parseInt(ratingEl.value),
                 text: text,
                 name: name || 'مستخدم',
@@ -1490,22 +1651,57 @@
                 timestamp: Date.now()
             };
 
-            saveReview(currentProductId, review);
+            try {
+                const { db } = window._firebase;
+                const { collection, addDoc } = window._firebaseFns;
+                await addDoc(collection(db, 'productReviews'), review);
 
-            // Reload reviews
-            loadReviews(currentProductId);
+                // Mark this user as the owner of this review (for edit/delete)
+                localStorage.setItem(getReviewerKey(reviewId), 'true');
 
-            // Refresh product page to update rating
-            const allProducts = [...perfumes, ...makeup];
-            const product = allProducts.find(p => p.id === currentProductId);
-            if (product) renderProductPage(product);
+                document.getElementById('reviewText').value = '';
+                document.getElementById('reviewerName').value = '';
+                document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+                showToast('تم إضافة تقييمك بنجاح!');
+            } catch (e) {
+                console.error('Error saving review:', e);
+                showToast('حدث خطأ في حفظ التقييم', true);
+            }
+        }
 
-            // Clear form
+        function editReview(reviewId, rating, text) {
+            editingReviewId = reviewId;
+            document.getElementById('reviewText').value = text;
+            document.querySelectorAll('input[name="rating"]').forEach(r => {
+                r.checked = parseInt(r.value) === rating;
+            });
+            document.querySelector('.write-review h4').innerHTML = '<i class="fas fa-edit"></i> تعديل تقييمك';
+            document.getElementById('submitReviewBtn').innerHTML = '<i class="fas fa-check"></i> حفظ التعديل';
+            document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+            document.getElementById('reviewText').focus();
+        }
+
+        function cancelEditReview() {
+            editingReviewId = null;
             document.getElementById('reviewText').value = '';
             document.getElementById('reviewerName').value = '';
             document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+            document.querySelector('.write-review h4').innerHTML = '<i class="fas fa-pen"></i> أضف تقييمك';
+            document.getElementById('submitReviewBtn').innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
 
-            showToast('تم إضافة تقييمك بنجاح!');
+        async function deleteReview(reviewId) {
+            if (!confirm('هل أنت متأكد من حذف هذا التقييم؟')) return;
+            try {
+                const { db } = window._firebase;
+                const { doc, deleteDoc } = window._firebaseFns;
+                await deleteDoc(doc(db, 'productReviews', reviewId));
+                localStorage.removeItem(getReviewerKey(reviewId));
+                showToast('تم حذف التقييم');
+            } catch (e) {
+                showToast('حدث خطأ في الحذف', true);
+            }
         }
 
         // Init
@@ -1942,6 +2138,8 @@
         }
 
         // Override showOrdersPage for Firestore
+        let unsubscribeOrders = null;
+
         async function showOrdersPage() {
             if (!currentUser) { showToast('يرجى تسجيل الدخول أولاً', true); showAuthModal(); return; }
 
@@ -1953,12 +2151,20 @@
 
             try {
                 const { db } = window._firebase;
-                const { collection, getDocs, query, where, orderBy } = window._firebaseFns;
+                const { collection, query, where, orderBy, onSnapshot } = window._firebaseFns;
                 const q = query(collection(db, 'orders'), where('customerUid', '==', currentUser.uid), orderBy('timestamp', 'desc'));
-                const snapshot = await getDocs(q);
-                orders = []; snapshot.forEach(doc => orders.push(doc.data()));
-                localStorage.setItem('drOrders', JSON.stringify(orders));
-                renderOrders();
+
+                // Real-time listener - updates instantly when order changes
+                unsubscribeOrders = onSnapshot(q, (snapshot) => {
+                    orders = [];
+                    snapshot.forEach(doc => orders.push(doc.data()));
+                    localStorage.setItem('drOrders', JSON.stringify(orders));
+                    renderOrders();
+                }, (error) => {
+                    console.error('Orders listener error:', error);
+                    orders = JSON.parse(localStorage.getItem('drOrders')) || [];
+                    renderOrders();
+                });
             } catch (error) {
                 orders = JSON.parse(localStorage.getItem('drOrders')) || [];
                 renderOrders();
@@ -2191,7 +2397,7 @@
                     <label>الاسم الكامل <span class="required">*</span></label>
                     <input type="text" id="authName" placeholder="محمد العلي">
                 </div>
-                <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="handleAuth()" id="authBtn">
+                <button class="btn-slim btn-slim-primary" style="width: 100%; margin-top: 10px; justify-content: center;" onclick="handleAuth()" id="authBtn">
                     <i class="fas fa-sign-in-alt"></i> <span id="authBtnText">دخول</span>
                 </button>
                 <div style="margin: 20px 0; position: relative; text-align: center;">
