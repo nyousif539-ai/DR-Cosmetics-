@@ -106,7 +106,7 @@
         }
         .product-card:hover { transform: translateY(-10px); border-color: rgba(201,169,98,0.3); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
         .product-image { height: 320px; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .product-image img { width: 100%; height: 100%; object-fit: contain; padding: 20px; transition: transform 0.4s ease; }
+        .product-image img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; padding: 20px; transition: transform 0.4s ease; display: block; }
         .product-card:hover .product-image img { transform: scale(1.05); }
         .product-image i { font-size: 4rem; color: var(--gold); opacity: 0.5; }
         .product-badge { position: absolute; top: 15px; right: 15px; background: var(--gold); color: var(--black); padding: 5px 15px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 2; }
@@ -563,11 +563,11 @@
             {
                 id: 1,
                 brand: "TOM FORD",
-                name: "Eau d'Ombré Leather",
+                name: "Ombré Leather",
                 desc: "عطر جلدي فاخر بمزيج من الجلد الأسود والباتشولي",
                 price: 60000,
                 oldPrice: 75000,
-                image: "https://imgur.com/phx6jHT",
+                image: "https://kimi-web-img.moonshot.cn/img/sdcdn.io/ad3c405576dad530b2cdd12a84df18b2ec86e344.png",
                 badge: "جديد",
                 rating: 4.9
             },
@@ -578,7 +578,7 @@
                 desc: "عطر خشبي فواكهي أسطوري برائحة الأناناس",
                 price: 70000,
                 oldPrice: 85000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/creedboutique.com/dfb635bfbd2100bed93ca43a16b9e775478637dd.jpg",
                 badge: "الأكثر مبيعاً",
                 rating: 5.0
             },
@@ -589,7 +589,7 @@
                 desc: "عطر زهري شرقي أنثوي برائحة الورد والباتشولي",
                 price: 45000,
                 oldPrice: 55000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/www.chanel.com/888f94514e227adcc85e30bff0ef5ab8dfb5f7a6.jpg",
                 badge: null,
                 rating: 4.8
             },
@@ -600,7 +600,7 @@
                 desc: "عطر خشبي حمضي جريء برائحة اللافندر",
                 price: 40000,
                 oldPrice: 50000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/www.dior.com/665a0edd89fe1e5e49a0c28b2f27aa7d2764b9e2.jpg",
                 badge: "محدود",
                 rating: 4.7
             }
@@ -614,18 +614,18 @@
                 desc: "كريم أساس احترافي يدوم 24 ساعة",
                 price: 15000,
                 oldPrice: 18000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/sdcdn.io/65aca4a9e9fdb952a807dcf06c5fe696e383dcad.png",
                 badge: "جديد",
                 rating: 4.6
             },
             {
                 id: 6,
                 brand: "HUDA BEAUTY",
-                name: "باليت ظلال عيون",
+                name: "باليت ظلال عيون Rose Gold",
                 desc: "18 لون غني بأصباغ عالية",
                 price: 25000,
                 oldPrice: 30000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/media.allure.com/fd3fb8c26dad20c40b7ff11b44e6631d0bfb57c8.jpg",
                 badge: null,
                 rating: 4.8
             },
@@ -636,7 +636,7 @@
                 desc: "صبغة غنية بلمسة مخملية",
                 price: 12000,
                 oldPrice: 15000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/www.temptalia.com/530ccf71aba2de3c0ea639bbdf7a35e3faa45a6e.jpg",
                 badge: null,
                 rating: 4.5
             },
@@ -647,7 +647,7 @@
                 desc: "إضاءة ذهبية ساحرة للوجه",
                 price: 18000,
                 oldPrice: 22000,
-                image: null,
+                image: "https://kimi-web-img.moonshot.cn/img/images.ctfassets.net/6af949030352af4afefaaa5794f012fd3d122686.jpg",
                 badge: "محدود",
                 rating: 4.9
             }
