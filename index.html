@@ -573,8 +573,8 @@
             <h1 class="hero-title">اكتشفي جمالك <span class="highlight">الحقيقي</span></h1>
             <p class="hero-desc">مجموعة حصرية من أرقى العطور والمكياج العالمي، مختارة بعناية لأجلك.</p>
             <div class="hero-btns">
-                <a href="#perfumes" class="btn btn-primary"><i class="fas fa-sparkles"></i> استكشفي العطور</a>
-                <a href="#makeup" class="btn btn-outline"><i class="fas fa-palette"></i> المكياج</a>
+                <a href="#perfumes" class="btn btn-primary" onclick="scrollToSection('perfumes'); return false;"><i class="fas fa-sparkles"></i> استكشفي العطور</a>
+                <a href="#makeup" class="btn btn-outline" onclick="scrollToSection('makeup'); return false;"><i class="fas fa-palette"></i> المكياج</a>
             </div>
         </div>
     </section>
@@ -598,16 +598,7 @@
     </section>
 
     <!-- Private -->
-    <section id="private">
-        <div class="section-header reveal">
-            <span class="section-label">حصرياً لكِ</span>
-            <h2 class="section-title">المجموعة <span style="color: var(--gold)">الخاصة</span></h2>
-        </div>
-        <div style="text-align: center; max-width: 600px; margin: 0 auto; color: var(--text-muted);">
-            <i class="fas fa-lock" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px; display: block;"></i>
-            <p>سجّلي دخولكِ للوصول إلى المجموعة الخاصة والعروض الحصرية</p>
-        </div>
-    </section>
+    
 
     <!-- Footer -->
     <footer>
@@ -1119,6 +1110,12 @@
             overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
         });
 
+        function goHome() {
+            closeOrdersPage();
+            closeAdminPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         // Init
         window.addEventListener('load', () => {
             setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
@@ -1334,15 +1331,8 @@
         function showProfileEdit() {
             if (!currentUser) return;
 
-            // Load user data into form
+            // Load name
             document.getElementById('profileName').value = currentUser.displayName || '';
-            document.getElementById('profileEmail').value = currentUser.email || '';
-
-            // Load saved profile data from localStorage
-            const savedProfile = JSON.parse(localStorage.getItem('drProfile_' + currentUser.uid) || '{}');
-            document.getElementById('profilePhone').value = savedProfile.phone || '';
-            document.getElementById('profileCity').value = savedProfile.city || '';
-            document.getElementById('profileAddress').value = savedProfile.address || '';
 
             // Set avatar
             const displayName = currentUser.displayName || currentUser.email.split('@')[0];
@@ -1363,9 +1353,6 @@
             if (!currentUser) return;
 
             const name = document.getElementById('profileName').value.trim();
-            const phone = document.getElementById('profilePhone').value.trim();
-            const city = document.getElementById('profileCity').value;
-            const address = document.getElementById('profileAddress').value.trim();
 
             try {
                 // Update display name in Firebase Auth
@@ -1373,10 +1360,6 @@
                     const { updateProfile } = window._firebaseFns;
                     await updateProfile(currentUser, { displayName: name });
                 }
-
-                // Save additional data to localStorage
-                const profileData = { name, phone, city, address, updatedAt: new Date().toISOString() };
-                localStorage.setItem('drProfile_' + currentUser.uid, JSON.stringify(profileData));
 
                 // Update UI
                 updateAuthUI();
@@ -1718,12 +1701,13 @@
     
     <!-- Profile Edit Modal -->
     <div class="modal-overlay" id="profileEditModal">
-        <div class="modal" style="max-width: 450px;">
-            <h3 style="margin-bottom: 5px;"><i class="fas fa-user-edit" style="color: var(--gold);"></i> الملف الشخصي</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">عدّل بياناتك الشخصية</p>
+        <div class="modal" style="max-width: 400px; text-align: center;">
+            <i class="fas fa-user-circle" style="color: var(--gold); font-size: 3rem; margin-bottom: 15px;"></i>
+            <h3 style="margin-bottom: 5px;">الملف الشخصي</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px;">عدّل صورتك واسمك</p>
 
-            <div class="profile-edit-avatar">
-                <div id="profileEditAvatarContainer">
+            <div class="profile-edit-avatar" style="margin-bottom: 25px;">
+                <div id="profileEditAvatarContainer" style="margin-bottom: 15px;">
                     <!-- Avatar will be inserted here -->
                 </div>
                 <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleProfilePhotoChange(event)">
@@ -1732,40 +1716,14 @@
                 </button>
             </div>
 
-            <div class="form-group" style="text-align: right;">
-                <label>الاسم الكامل</label>
-                <input type="text" id="profileName" placeholder="محمد العلي">
-            </div>
-            <div class="form-group" style="text-align: right;">
-                <label>البريد الإلكتروني</label>
-                <input type="email" id="profileEmail" disabled style="opacity: 0.6; cursor: not-allowed;">
-            </div>
-            <div class="form-group" style="text-align: right;">
-                <label>رقم الموبايل</label>
-                <input type="tel" id="profilePhone" placeholder="07XX XXX XXXX">
-            </div>
-            <div class="form-group" style="text-align: right;">
-                <label>المدينة</label>
-                <select id="profileCity">
-                    <option value="">اختر المدينة</option>
-                    <option value="بغداد">بغداد</option>
-                    <option value="البصرة">البصرة</option>
-                    <option value="أربيل">أربيل</option>
-                    <option value="الموصل">الموصل</option>
-                    <option value="النجف">النجف</option>
-                    <option value="كربلاء">كربلاء</option>
-                    <option value="السليمانية">السليمانية</option>
-                    <option value="أخرى">أخرى</option>
-                </select>
-            </div>
-            <div class="form-group" style="text-align: right;">
-                <label>العنوان</label>
-                <textarea id="profileAddress" placeholder="الحي - الشارع - أقرب نقطة دالة"></textarea>
+            <div class="form-group" style="text-align: right; margin-bottom: 20px;">
+                <label>الاسم</label>
+                <input type="text" id="profileName" placeholder="محمد العلي" style="text-align: center;">
             </div>
 
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <div style="display: flex; gap: 10px;">
                 <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">
-                    <i class="fas fa-save"></i> حفظ التغييرات
+                    <i class="fas fa-check"></i> موافق
                 </button>
                 <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('profileEditModal')">
                     <i class="fas fa-times"></i> إلغاء
